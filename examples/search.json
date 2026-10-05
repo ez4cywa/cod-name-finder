@@ -1,0 +1,12 @@
+{
+  "slots": [["rex/wpn/ar_mike4/"], ["weap_rex_mike4_fire_plr_01", "weap_rex_mike4_fire_plr_02"], [".qnn.85.48000.all"]],
+  "profiles": ["iw-resource63"],
+  "kinds": ["sndasset"],
+  "exclude_material": true,
+  "backend": "auto",
+  "budget": 1000000,
+  "seconds": 3600,
+  "threads": 4,
+  "duty": 75,
+  "keyword": "mike4"
+}

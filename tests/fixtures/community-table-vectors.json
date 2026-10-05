@@ -1,0 +1,975 @@
+{
+  "source_kind": "original synthetic names, independently calculated fixed golden vectors",
+  "synthetic": true,
+  "scope": "11 table-routing/profile regressions with 20 original samples each; contains no community CSV excerpts",
+  "golden_reference": {
+    "implementation": "tests/reference/hash_mini.hpp (attributed MIT); SDBM uses an independent ASCII lowercase uint32 recurrence",
+    "functions": {
+      "iw-resource63": "hash::HashIWAsset",
+      "fnv1a64": "hash::HashX64",
+      "fnv1a60": "hash::HashX64 & hash::MASK60",
+      "fnv1a32": "hash::HashX32",
+      "sab-sdbm32": "uint32 h=5381; h=h*65599+ASCII_lowercase(byte); retain backslashes"
+    },
+    "generation": "Compiled independent C++ reference, without importing production finder/hash implementations; expected values remain fixed in this file"
+  },
+  "tables": [
+    {
+      "table": "fnv1a_xanims_v2",
+      "profile": "iw-resource63",
+      "selection": "original synthetic normalization and filename examples",
+      "rows": [
+        {
+          "name": "nf_fixture_anim_00_motion",
+          "hash": "6462e84f85cdfb90"
+        },
+        {
+          "name": "NF_FIXTURE_ANIM_01_MOTION",
+          "hash": "2864f6873cfc6cb1"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_anim_02_motion",
+          "hash": "4d802e9a882dd6e0"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_anim_03_motion",
+          "hash": "1f44e4aea3707181"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_anim_04_motion",
+          "hash": "76065dafeb5657d6"
+        },
+        {
+          "name": "nf_fixture_anim_05_motion",
+          "hash": "71a109212b4c39a5"
+        },
+        {
+          "name": "NF_FIXTURE_ANIM_06_MOTION",
+          "hash": "6b876f01a7ebb89a"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_anim_07_motion",
+          "hash": "4a4a280fe330f975"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_anim_08_motion",
+          "hash": "0ff5cb059eb7bb4e"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_anim_09_motion",
+          "hash": "2c2eb8e7f2687873"
+        },
+        {
+          "name": "nf_fixture_anim_10_motion",
+          "hash": "5d100d9a48089027"
+        },
+        {
+          "name": "NF_FIXTURE_ANIM_11_MOTION",
+          "hash": "7baacb1831e01576"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_anim_12_motion",
+          "hash": "68ec6e17a05ce123"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_anim_13_motion",
+          "hash": "5d3cdb1671ab5732"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_anim_14_motion",
+          "hash": "627de9bbd69442e5"
+        },
+        {
+          "name": "nf_fixture_anim_15_motion",
+          "hash": "5fe645fcf86fc30a"
+        },
+        {
+          "name": "NF_FIXTURE_ANIM_16_MOTION",
+          "hash": "3425cf6b31c4dd15"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_anim_17_motion",
+          "hash": "7b75bd46e65f063e"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_anim_18_motion",
+          "hash": "3e534a07579cefe5"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_anim_19_motion",
+          "hash": "0495ec92ca5794a8"
+        }
+      ]
+    },
+    {
+      "table": "fnv1a_ximages_v2",
+      "profile": "iw-resource63",
+      "selection": "original synthetic normalization and filename examples",
+      "rows": [
+        {
+          "name": "nf_fixture_image_00_checker",
+          "hash": "60e87c792158db2b"
+        },
+        {
+          "name": "NF_FIXTURE_IMAGE_01_CHECKER",
+          "hash": "1bd92a6092e6aba4"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_image_02_checker",
+          "hash": "4db46313071bc4f3"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_image_03_checker",
+          "hash": "1fb254affac7f14c"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_image_04_checker",
+          "hash": "39156533e93833ed"
+        },
+        {
+          "name": "nf_fixture_image_05_checker",
+          "hash": "5cac685fd1769488"
+        },
+        {
+          "name": "NF_FIXTURE_IMAGE_06_CHECKER",
+          "hash": "6443dbe9910ac9b9"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_image_07_checker",
+          "hash": "120e14838cbc1c50"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_image_08_checker",
+          "hash": "0d1740fe57524355"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_image_09_checker",
+          "hash": "445bb159b4740152"
+        },
+        {
+          "name": "nf_fixture_image_10_checker",
+          "hash": "7a3226a9e1be1c6a"
+        },
+        {
+          "name": "NF_FIXTURE_IMAGE_11_CHECKER",
+          "hash": "7a04f06e47bd95c1"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_image_12_checker",
+          "hash": "12887dbf6366bb06"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_image_13_checker",
+          "hash": "5b17da719e77a68d"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_image_14_checker",
+          "hash": "5ee0bc6f2f2e778c"
+        },
+        {
+          "name": "nf_fixture_image_15_checker",
+          "hash": "6cd138849f320abd"
+        },
+        {
+          "name": "NF_FIXTURE_IMAGE_16_CHECKER",
+          "hash": "7d1edefc99dba74c"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_image_17_checker",
+          "hash": "1d6f9b119620acd1"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_image_18_checker",
+          "hash": "2d2595deb7789974"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_image_19_checker",
+          "hash": "701946bfc2ed949f"
+        }
+      ]
+    },
+    {
+      "table": "fnv1a_xmaterials_v2",
+      "profile": "iw-resource63",
+      "selection": "original synthetic normalization and filename examples",
+      "rows": [
+        {
+          "name": "nf_fixture_material_00_matte",
+          "hash": "67decbf53a4c9423"
+        },
+        {
+          "name": "NF_FIXTURE_MATERIAL_01_MATTE",
+          "hash": "3d33e2620eb8100c"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_material_02_matte",
+          "hash": "289784969b7db4e3"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_material_03_matte",
+          "hash": "1103681a6621a2cc"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_material_04_matte",
+          "hash": "3affae24a8c92d89"
+        },
+        {
+          "name": "nf_fixture_material_05_matte",
+          "hash": "0856892ff6e55670"
+        },
+        {
+          "name": "NF_FIXTURE_MATERIAL_06_MATTE",
+          "hash": "2c8452a6615fdebd"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_material_07_matte",
+          "hash": "1f800efdd2ef8330"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_material_08_matte",
+          "hash": "25dc1f1b5a0fa101"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_material_09_matte",
+          "hash": "1b875fda50b48106"
+        },
+        {
+          "name": "nf_fixture_material_10_matte",
+          "hash": "20cf0b6e539a8b9a"
+        },
+        {
+          "name": "NF_FIXTURE_MATERIAL_11_MATTE",
+          "hash": "04d21a6828ac2289"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_material_12_matte",
+          "hash": "4f8d84c419c741c6"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_material_13_matte",
+          "hash": "08febd624950f9d5"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_material_14_matte",
+          "hash": "163cc4d87c02fad0"
+        },
+        {
+          "name": "nf_fixture_material_15_matte",
+          "hash": "39d5114e747141ed"
+        },
+        {
+          "name": "NF_FIXTURE_MATERIAL_16_MATTE",
+          "hash": "1175419df9ed8860"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_material_17_matte",
+          "hash": "56507dac298e40b1"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_material_18_matte",
+          "hash": "5594fa3f5e038520"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_material_19_matte",
+          "hash": "59652ff6d3204d6b"
+        }
+      ]
+    },
+    {
+      "table": "fnv1a_animpkgs_v2",
+      "profile": "iw-resource63",
+      "selection": "original synthetic normalization and filename examples",
+      "rows": [
+        {
+          "name": "nf_fixture_animpkg_00_bundle",
+          "hash": "25acb54ee55bd4dc"
+        },
+        {
+          "name": "NF_FIXTURE_ANIMPKG_01_BUNDLE",
+          "hash": "5f1434b738efdfb5"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_animpkg_02_bundle",
+          "hash": "2e237f413f1c861c"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_animpkg_03_bundle",
+          "hash": "146afeae7d90b1f5"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_animpkg_04_bundle",
+          "hash": "790b3cf2f59a0ad2"
+        },
+        {
+          "name": "nf_fixture_animpkg_05_bundle",
+          "hash": "115bef9f7424dee9"
+        },
+        {
+          "name": "NF_FIXTURE_ANIMPKG_06_BUNDLE",
+          "hash": "43413f636b8cf716"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_animpkg_07_bundle",
+          "hash": "53e6e67d4b67f029"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_animpkg_08_bundle",
+          "hash": "765b5a1e2480a63a"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_animpkg_09_bundle",
+          "hash": "6611e9d917e4490f"
+        },
+        {
+          "name": "nf_fixture_animpkg_10_bundle",
+          "hash": "16fcbcb49ab6f65f"
+        },
+        {
+          "name": "NF_FIXTURE_ANIMPKG_11_BUNDLE",
+          "hash": "3d6eae6e33e99dce"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_animpkg_12_bundle",
+          "hash": "1bc18e5e6f0ab2b3"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_animpkg_13_bundle",
+          "hash": "62c7b5b25c06a4e2"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_animpkg_14_bundle",
+          "hash": "213445a2306133c5"
+        },
+        {
+          "name": "nf_fixture_animpkg_15_bundle",
+          "hash": "0f573a2b248133ea"
+        },
+        {
+          "name": "NF_FIXTURE_ANIMPKG_16_BUNDLE",
+          "hash": "00a12672fb5b628d"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_animpkg_17_bundle",
+          "hash": "40b59fdf47bff746"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_animpkg_18_bundle",
+          "hash": "0c7df06557ff3ccd"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_animpkg_19_bundle",
+          "hash": "53eb86272c4d28d8"
+        }
+      ]
+    },
+    {
+      "table": "fnv1a_soundbanks_v2",
+      "profile": "iw-resource63",
+      "selection": "original synthetic normalization and filename examples",
+      "rows": [
+        {
+          "name": "nf_fixture_bank_00.all",
+          "hash": "222ea495deb02e65"
+        },
+        {
+          "name": "NF_FIXTURE_BANK_01.ALL",
+          "hash": "73bd17883131dbd6"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_bank_02.all",
+          "hash": "06a8b28410fb86a9"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_bank_03.all",
+          "hash": "7f0809a66659f13a"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_bank_04.all",
+          "hash": "5693d91b3322f15b"
+        },
+        {
+          "name": "nf_fixture_bank_05.all",
+          "hash": "1717e3a517ce9302"
+        },
+        {
+          "name": "NF_FIXTURE_BANK_06.ALL",
+          "hash": "335a448ceb9f167b"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_bank_07.all",
+          "hash": "355f3c7d81e992ee"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_bank_08.all",
+          "hash": "65b29fa7b4aef78b"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_bank_09.all",
+          "hash": "167ecbdd0890b750"
+        },
+        {
+          "name": "nf_fixture_bank_10.all",
+          "hash": "023b709dcf7a42d8"
+        },
+        {
+          "name": "NF_FIXTURE_BANK_11.ALL",
+          "hash": "06fe197b77ac48df"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_bank_12.all",
+          "hash": "6cc21d30742ba330"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_bank_13.all",
+          "hash": "1b4faa3e21c27077"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_bank_14.all",
+          "hash": "499d13dd58dffdee"
+        },
+        {
+          "name": "nf_fixture_bank_15.all",
+          "hash": "540ce6a45effd02b"
+        },
+        {
+          "name": "NF_FIXTURE_BANK_16.ALL",
+          "hash": "383ac3aaabbd75b2"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_bank_17.all",
+          "hash": "6b08933bee37e5a3"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_bank_18.all",
+          "hash": "43befd64fc51f796"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_bank_19.all",
+          "hash": "34cb232e9de0db21"
+        }
+      ]
+    },
+    {
+      "table": "fnv1a_xsounds_v2",
+      "profile": "iw-resource63",
+      "selection": "original synthetic normalization and filename examples",
+      "rows": [
+        {
+          "name": "nf_fixture/audio/clip_00.48000.all",
+          "hash": "1d37ed6ff8267a26"
+        },
+        {
+          "name": "NF_FIXTURE/AUDIO/CLIP_01.48000.ALL",
+          "hash": "1509ca60d17fc521"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture/audio/clip_02.48000.all",
+          "hash": "6381edf6b25cb58e"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture/audio/clip_03.48000.all",
+          "hash": "613e1f31a4eecba9"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture/audio/clip_04.48000.all",
+          "hash": "4982a7a4f4d90180"
+        },
+        {
+          "name": "nf_fixture/audio/clip_05.48000.all",
+          "hash": "1376823f927c1e5d"
+        },
+        {
+          "name": "NF_FIXTURE/AUDIO/CLIP_06.48000.ALL",
+          "hash": "769c7bea2faa0794"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture/audio/clip_07.48000.all",
+          "hash": "41995f264b81ff25"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture/audio/clip_08.48000.all",
+          "hash": "0ef360a63bb48ce8"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture/audio/clip_09.48000.all",
+          "hash": "77399c5f5f101cb7"
+        },
+        {
+          "name": "nf_fixture/audio/clip_10.48000.all",
+          "hash": "34ce8daac9b42beb"
+        },
+        {
+          "name": "NF_FIXTURE/AUDIO/CLIP_11.48000.ALL",
+          "hash": "4cf00cb60f5b7028"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture/audio/clip_12.48000.all",
+          "hash": "3e723190f8b23dff"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture/audio/clip_13.48000.all",
+          "hash": "3e643bb070fc1aec"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture/audio/clip_14.48000.all",
+          "hash": "24b456529a9c9a6d"
+        },
+        {
+          "name": "nf_fixture/audio/clip_15.48000.all",
+          "hash": "1ade89d941041d44"
+        },
+        {
+          "name": "NF_FIXTURE/AUDIO/CLIP_16.48000.ALL",
+          "hash": "586220873052054d"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture/audio/clip_17.48000.all",
+          "hash": "5e4b1c965437e3d0"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture/audio/clip_18.48000.all",
+          "hash": "01e5de629358423d"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture/audio/clip_19.48000.all",
+          "hash": "6091c83ada7557ee"
+        }
+      ]
+    },
+    {
+      "table": "fnv1a_soundbanks_aliases_v2",
+      "profile": "fnv1a64",
+      "selection": "original synthetic normalization and filename examples",
+      "rows": [
+        {
+          "name": "nf_fixture_alias_00_event",
+          "hash": "358b7d3f209e834a"
+        },
+        {
+          "name": "NF_FIXTURE_ALIAS_01_EVENT",
+          "hash": "c3dbb08a1474ac45"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_alias_02_event",
+          "hash": "6ae79957bd7b1d0e"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_alias_03_event",
+          "hash": "8834056e12883f09"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_alias_04_event",
+          "hash": "f7008d80e33e9c02"
+        },
+        {
+          "name": "nf_fixture_alias_05_event",
+          "hash": "a9f91ff7c1f5a5b9"
+        },
+        {
+          "name": "NF_FIXTURE_ALIAS_06_EVENT",
+          "hash": "f29cbda0cc16a3ac"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_alias_07_event",
+          "hash": "d730abe46844ad55"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_alias_08_event",
+          "hash": "7212fe82b41b73f4"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_alias_09_event",
+          "hash": "7ffca803fd213479"
+        },
+        {
+          "name": "nf_fixture_alias_10_event",
+          "hash": "f7684b1f7427cee3"
+        },
+        {
+          "name": "NF_FIXTURE_ALIAS_11_EVENT",
+          "hash": "8227d2e76a41af08"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_alias_12_event",
+          "hash": "eb81d4ac5c823ffb"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_alias_13_event",
+          "hash": "5e1d0a548710e1a0"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_alias_14_event",
+          "hash": "62d8ae34bc4a30db"
+        },
+        {
+          "name": "nf_fixture_alias_15_event",
+          "hash": "9440190a0eebfddc"
+        },
+        {
+          "name": "NF_FIXTURE_ALIAS_16_EVENT",
+          "hash": "7bf36409e4a837e9"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_alias_17_event",
+          "hash": "045f3e953b65a1b4"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_alias_18_event",
+          "hash": "01e2495d45dbf015"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_alias_19_event",
+          "hash": "b7fb7698f7cbb39c"
+        }
+      ]
+    },
+    {
+      "table": "fnv1a_strings",
+      "profile": "fnv1a60",
+      "selection": "original synthetic normalization and filename examples",
+      "rows": [
+        {
+          "name": "nf_fixture_notify_00",
+          "hash": "056c3f64f82ac296"
+        },
+        {
+          "name": "NF_FIXTURE_NOTIFY_01",
+          "hash": "056c4064f82ac449"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_notify_02",
+          "hash": "006eef91345e081e"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_notify_03",
+          "hash": "006ef091345e09d1"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_notify_04",
+          "hash": "09bafadc7ca52e96"
+        },
+        {
+          "name": "nf_fixture_notify_05",
+          "hash": "056c4464f82acb15"
+        },
+        {
+          "name": "NF_FIXTURE_NOTIFY_06",
+          "hash": "056c4164f82ac5fc"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_notify_07",
+          "hash": "006ef491345e109d"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_notify_08",
+          "hash": "006ee591345df720"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_notify_09",
+          "hash": "09bb07dc7ca544ad"
+        },
+        {
+          "name": "nf_fixture_notify_10",
+          "hash": "056fc564f82ddc1f"
+        },
+        {
+          "name": "NF_FIXTURE_NOTIFY_11",
+          "hash": "056fc464f82dda6c"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_notify_12",
+          "hash": "0072719134611adb"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_notify_13",
+          "hash": "0072709134611928"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_notify_14",
+          "hash": "09be88dc7ca855b7"
+        },
+        {
+          "name": "nf_fixture_notify_15",
+          "hash": "056fc064f82dd3a0"
+        },
+        {
+          "name": "NF_FIXTURE_NOTIFY_16",
+          "hash": "056fc364f82dd8b9"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_notify_17",
+          "hash": "0072749134611ff4"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_notify_18",
+          "hash": "00726b91346110a9"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_notify_19",
+          "hash": "09be7bdc7ca83fa0"
+        }
+      ]
+    },
+    {
+      "table": "fnv1a_bones",
+      "profile": "fnv1a32",
+      "selection": "original synthetic normalization and filename examples",
+      "rows": [
+        {
+          "name": "nf_fixture_joint_00",
+          "hash": "00000000528bdce5"
+        },
+        {
+          "name": "NF_FIXTURE_JOINT_01",
+          "hash": "00000000518bdb52"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_joint_02",
+          "hash": "00000000dd25fe19"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_joint_03",
+          "hash": "00000000dc25fc86"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_joint_04",
+          "hash": "00000000f827dbed"
+        },
+        {
+          "name": "nf_fixture_joint_05",
+          "hash": "000000004d8bd506"
+        },
+        {
+          "name": "NF_FIXTURE_JOINT_06",
+          "hash": "000000004c8bd373"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_joint_07",
+          "hash": "00000000e02602d2"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_joint_08",
+          "hash": "00000000e326078b"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_joint_09",
+          "hash": "00000000eb27c776"
+        },
+        {
+          "name": "nf_fixture_joint_10",
+          "hash": "000000004c8994dc"
+        },
+        {
+          "name": "NF_FIXTURE_JOINT_11",
+          "hash": "000000004d89966f"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_joint_12",
+          "hash": "00000000732318a4"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_joint_13",
+          "hash": "0000000074231a37"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_joint_14",
+          "hash": "000000007224ca64"
+        },
+        {
+          "name": "nf_fixture_joint_15",
+          "hash": "0000000049899023"
+        },
+        {
+          "name": "NF_FIXTURE_JOINT_16",
+          "hash": "000000004a8991b6"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_joint_17",
+          "hash": "00000000702313eb"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_joint_18",
+          "hash": "000000006d230f32"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_joint_19",
+          "hash": "000000006724b913"
+        }
+      ]
+    },
+    {
+      "table": "fnv1a_bones_v2",
+      "profile": "fnv1a64",
+      "selection": "original synthetic normalization and filename examples",
+      "rows": [
+        {
+          "name": "nf_fixture_bone_v2_00",
+          "hash": "7d0790963785757c"
+        },
+        {
+          "name": "NF_FIXTURE_BONE_V2_01",
+          "hash": "7d0791963785772f"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_bone_v2_02",
+          "hash": "2cfe8c8def48ac00"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_bone_v2_03",
+          "hash": "2cfe8d8def48adb3"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_bone_v2_04",
+          "hash": "86c71a555fbe4484"
+        },
+        {
+          "name": "nf_fixture_bone_v2_05",
+          "hash": "7d078d9637857063"
+        },
+        {
+          "name": "NF_FIXTURE_BONE_V2_06",
+          "hash": "7d078e9637857216"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_bone_v2_07",
+          "hash": "2cfe918def48b47f"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_bone_v2_08",
+          "hash": "2cfe968def48bcfe"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_bone_v2_09",
+          "hash": "86c70f555fbe31d3"
+        },
+        {
+          "name": "nf_fixture_bone_v2_10",
+          "hash": "7d0b169637888f05"
+        },
+        {
+          "name": "NF_FIXTURE_BONE_V2_11",
+          "hash": "7d0b159637888d52"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_bone_v2_12",
+          "hash": "2d02168def4bcc55"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_bone_v2_13",
+          "hash": "2d02158def4bcaa2"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_bone_v2_14",
+          "hash": "86caa0555fc15e0d"
+        },
+        {
+          "name": "nf_fixture_bone_v2_15",
+          "hash": "7d0b119637888686"
+        },
+        {
+          "name": "NF_FIXTURE_BONE_V2_16",
+          "hash": "7d0b1096378884d3"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture_bone_v2_17",
+          "hash": "2d02118def4bc3d6"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture_bone_v2_18",
+          "hash": "2d021c8def4bd687"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture_bone_v2_19",
+          "hash": "86ca93555fc147f6"
+        }
+      ]
+    },
+    {
+      "table": "bo2_sab",
+      "profile": "sab-sdbm32",
+      "selection": "original synthetic normalization and filename examples",
+      "rows": [
+        {
+          "name": "nf_fixture\\audio\\sab_00.wav",
+          "hash": "000000009d451964"
+        },
+        {
+          "name": "NF_FIXTURE\\AUDIO\\SAB_01.WAV",
+          "hash": "00000000e1317865"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture\\audio\\sab_02.wav",
+          "hash": "000000002570fb81"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture\\audio\\sab_03.wav",
+          "hash": "00000000ff545aef"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture\\audio\\sab_04.wav",
+          "hash": "00000000508d9030"
+        },
+        {
+          "name": "nf_fixture\\audio\\sab_05.wav",
+          "hash": "00000000f0e2f469"
+        },
+        {
+          "name": "NF_FIXTURE\\AUDIO\\SAB_06.WAV",
+          "hash": "0000000034cf536a"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture\\audio\\sab_07.wav",
+          "hash": "00000000790ed686"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture\\audio\\sab_08.wav",
+          "hash": "0000000052f235f4"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture\\audio\\sab_09.wav",
+          "hash": "00000000a42b6b35"
+        },
+        {
+          "name": "nf_fixture\\audio\\sab_10.wav",
+          "hash": "00000000b3717aa3"
+        },
+        {
+          "name": "NF_FIXTURE\\AUDIO\\SAB_11.WAV",
+          "hash": "00000000f75dd9a4"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture\\audio\\sab_12.wav",
+          "hash": "000000003b9d5cc0"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture\\audio\\sab_13.wav",
+          "hash": "000000001580bc2e"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture\\audio\\sab_14.wav",
+          "hash": "0000000066b9f16f"
+        },
+        {
+          "name": "nf_fixture\\audio\\sab_15.wav",
+          "hash": "00000000070f55a8"
+        },
+        {
+          "name": "NF_FIXTURE\\AUDIO\\SAB_16.WAV",
+          "hash": "000000004afbb4a9"
+        },
+        {
+          "name": "FixtureFolder\\nf_fixture\\audio\\sab_17.wav",
+          "hash": "000000008f3b37c5"
+        },
+        {
+          "name": "FixtureFolder/nf_fixture\\audio\\sab_18.wav",
+          "hash": "00000000691e9733"
+        },
+        {
+          "name": "nf_fixture/deep/nested/nf_fixture\\audio\\sab_19.wav",
+          "hash": "00000000ba57cc74"
+        }
+      ]
+    }
+  ]
+}

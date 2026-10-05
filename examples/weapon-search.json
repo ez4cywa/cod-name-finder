@@ -1,0 +1,13 @@
+{
+  "weapon": {
+    "keyword": "mike4",
+    "seeds": ["rex_ar_mike4_mp"],
+    "number_max": 8,
+    "strip_export_extension": false
+  },
+  "profiles": ["iw-resource63"],
+  "backend": "auto",
+  "budget": 250000,
+  "seconds": 3600,
+  "duty": 75
+}

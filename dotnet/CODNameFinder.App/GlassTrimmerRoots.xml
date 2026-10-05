@@ -1,0 +1,20 @@
+<linker>
+  <!-- Fluid 1.4.0 observes renderer invalidations and rounded clips through
+       reflection. Preserve only these members for the NativeAOT publication. -->
+  <assembly fullname="Avalonia.Controls">
+    <type fullname="Avalonia.Controls.TopLevel">
+      <property name="Renderer" />
+    </type>
+    <type fullname="Avalonia.Controls.Border">
+      <property name="ClipToBoundsRadius" />
+    </type>
+  </assembly>
+  <assembly fullname="Avalonia.Base">
+    <type fullname="Avalonia.Rendering.Composition.CompositingRenderer">
+      <event name="SceneInvalidated" />
+    </type>
+    <type fullname="Avalonia.Rendering.SceneInvalidatedEventArgs">
+      <property name="DirtyRect" />
+    </type>
+  </assembly>
+</linker>

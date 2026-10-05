@@ -1,0 +1,1 @@
+This contains only synthetic placeholder files. Use the bundled Chinese tutorial and select these folders in the GUI. Expected: 3 verified names, 1 existing name excluded, 2 new names. For CLI, replace all REPLACE_WITH paths in configuration.json with absolute paths. Do not use this sample index to deduplicate real game assets.

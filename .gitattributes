@@ -1,0 +1,5 @@
+# Preserve source bytes used by content fingerprints across checkouts.
+* -text
+*.png binary
+*.ico binary
+*.cdb binary

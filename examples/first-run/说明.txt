@@ -1,0 +1,1 @@
+选择独立工作库；导入 hashed-assets，BO6 / 资产名称 / iw-resource63，资产类型下拉选择 声音资产 · sndasset；模板 weapons/standalone_{word}.snd，插槽 {"word":["old","new"]}；CPU 查找；导出时选择 existing-indexes。预期发现2项，排除已有1项，输出1项 weapons/standalone_new.snd。勿把本示例索引当作真实 Saluki 索引。

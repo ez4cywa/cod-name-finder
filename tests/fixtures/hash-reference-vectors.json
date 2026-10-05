@@ -1,0 +1,470 @@
+{
+  "iw-resource63": [
+    {
+      "name": "a",
+      "hash": "3f8cddef61c14721"
+    },
+    {
+      "name": "A",
+      "hash": "3f8cddef61c14721"
+    },
+    {
+      "name": "hello",
+      "hash": "4f9c57af77013852"
+    },
+    {
+      "name": "Weapons\\Rifle_Fire_01",
+      "hash": "72726c14a55e80b7"
+    },
+    {
+      "name": "scripts/mp/_load.gsc",
+      "hash": "54e1301ac9b77e7d"
+    },
+    {
+      "name": "weap_rex_mike4_fire_plr_01.qnn.85.48000.all",
+      "hash": "5741c9eea7226361"
+    }
+  ],
+  "fnv1a63": [
+    {
+      "name": "a",
+      "hash": "2f63dc4c8601ec8c"
+    },
+    {
+      "name": "A",
+      "hash": "2f63dc4c8601ec8c"
+    },
+    {
+      "name": "hello",
+      "hash": "2430d84680aabd0b"
+    },
+    {
+      "name": "Weapons\\Rifle_Fire_01",
+      "hash": "25f3f0dd3a0379ca"
+    },
+    {
+      "name": "scripts/mp/_load.gsc",
+      "hash": "15eda7b9c6d9deda"
+    },
+    {
+      "name": "weap_rex_mike4_fire_plr_01.qnn.85.48000.all",
+      "hash": "3255359af5343388"
+    }
+  ],
+  "fnv1a64": [
+    {
+      "name": "a",
+      "hash": "af63dc4c8601ec8c"
+    },
+    {
+      "name": "A",
+      "hash": "af63dc4c8601ec8c"
+    },
+    {
+      "name": "hello",
+      "hash": "a430d84680aabd0b"
+    },
+    {
+      "name": "Weapons\\Rifle_Fire_01",
+      "hash": "25f3f0dd3a0379ca"
+    },
+    {
+      "name": "scripts/mp/_load.gsc",
+      "hash": "15eda7b9c6d9deda"
+    },
+    {
+      "name": "weap_rex_mike4_fire_plr_01.qnn.85.48000.all",
+      "hash": "b255359af5343388"
+    }
+  ],
+  "fnv1a32": [
+    {
+      "name": "a",
+      "hash": "00000000e40c292c"
+    },
+    {
+      "name": "A",
+      "hash": "00000000e40c292c"
+    },
+    {
+      "name": "hello",
+      "hash": "000000004f9f2cab"
+    },
+    {
+      "name": "Weapons\\Rifle_Fire_01",
+      "hash": "00000000b61f91ea"
+    },
+    {
+      "name": "scripts/mp/_load.gsc",
+      "hash": "00000000f7a85ada"
+    },
+    {
+      "name": "weap_rex_mike4_fire_plr_01.qnn.85.48000.all",
+      "hash": "00000000b7eb5688"
+    }
+  ],
+  "bo3-bo4-early-script32": [
+    {
+      "name": "a",
+      "hash": "00000000f96bc9fe"
+    },
+    {
+      "name": "A",
+      "hash": "00000000f96bc9fe"
+    },
+    {
+      "name": "hello",
+      "hash": "00000000437d114f"
+    },
+    {
+      "name": "Weapons\\Rifle_Fire_01",
+      "hash": "00000000b4d2595c"
+    },
+    {
+      "name": "scripts/mp/_load.gsc",
+      "hash": "00000000400a3b84"
+    },
+    {
+      "name": "weap_rex_mike4_fire_plr_01.qnn.85.48000.all",
+      "hash": "00000000a7c597d6"
+    }
+  ],
+  "bo4-bocw-script32": [
+    {
+      "name": "a",
+      "hash": "000000009272d068"
+    },
+    {
+      "name": "A",
+      "hash": "000000009272d068"
+    },
+    {
+      "name": "hello",
+      "hash": "000000003a1aab5f"
+    },
+    {
+      "name": "Weapons\\Rifle_Fire_01",
+      "hash": "00000000070025fb"
+    },
+    {
+      "name": "scripts/mp/_load.gsc",
+      "hash": "000000006c99425c"
+    },
+    {
+      "name": "weap_rex_mike4_fire_plr_01.qnn.85.48000.all",
+      "hash": "00000000c68e4577"
+    }
+  ],
+  "mwii-mwiii-script64": [
+    {
+      "name": "a",
+      "hash": "ac0e514ac96a9210"
+    },
+    {
+      "name": "A",
+      "hash": "ac0e514ac96a9210"
+    },
+    {
+      "name": "hello",
+      "hash": "9c64f5b223c246bf"
+    },
+    {
+      "name": "Weapons\\Rifle_Fire_01",
+      "hash": "c4fa06b62e32168e"
+    },
+    {
+      "name": "scripts/mp/_load.gsc",
+      "hash": "591290b3b33bbb46"
+    },
+    {
+      "name": "weap_rex_mike4_fire_plr_01.qnn.85.48000.all",
+      "hash": "2f48f864a288396c"
+    }
+  ],
+  "mwii-mwiii-script63": [
+    {
+      "name": "a",
+      "hash": "2c0e514ac96a9210"
+    },
+    {
+      "name": "A",
+      "hash": "2c0e514ac96a9210"
+    },
+    {
+      "name": "hello",
+      "hash": "1c64f5b223c246bf"
+    },
+    {
+      "name": "Weapons\\Rifle_Fire_01",
+      "hash": "44fa06b62e32168e"
+    },
+    {
+      "name": "scripts/mp/_load.gsc",
+      "hash": "591290b3b33bbb46"
+    },
+    {
+      "name": "weap_rex_mike4_fire_plr_01.qnn.85.48000.all",
+      "hash": "2f48f864a288396c"
+    }
+  ],
+  "iw-dvar64": [
+    {
+      "name": "a",
+      "hash": "6b7e51087b4be6a9"
+    },
+    {
+      "name": "A",
+      "hash": "6b7e51087b4be6a9"
+    },
+    {
+      "name": "hello",
+      "hash": "ffdba810727eb60e"
+    },
+    {
+      "name": "Weapons\\Rifle_Fire_01",
+      "hash": "28a6451a3cf6123f"
+    },
+    {
+      "name": "scripts/mp/_load.gsc",
+      "hash": "046cd245722dc91d"
+    },
+    {
+      "name": "weap_rex_mike4_fire_plr_01.qnn.85.48000.all",
+      "hash": "153718bf5420ac39"
+    }
+  ],
+  "bo6-script64": [
+    {
+      "name": "a",
+      "hash": "0eaf6ece70bfc601"
+    },
+    {
+      "name": "A",
+      "hash": "0eaf6ece70bfc601"
+    },
+    {
+      "name": "hello",
+      "hash": "28c75069b555111e"
+    },
+    {
+      "name": "Weapons\\Rifle_Fire_01",
+      "hash": "5c6f84db89b81e23"
+    },
+    {
+      "name": "scripts/mp/_load.gsc",
+      "hash": "baa25ae045a53501"
+    },
+    {
+      "name": "weap_rex_mike4_fire_plr_01.qnn.85.48000.all",
+      "hash": "4623ea693c1e489d"
+    }
+  ],
+  "bo6-sp-script64": [
+    {
+      "name": "a",
+      "hash": "0eaf6ece70bfc601"
+    },
+    {
+      "name": "A",
+      "hash": "0eaf6ece70bfc601"
+    },
+    {
+      "name": "hello",
+      "hash": "32f3c7af4d328c82"
+    },
+    {
+      "name": "Weapons\\Rifle_Fire_01",
+      "hash": "f74f99369184bee7"
+    },
+    {
+      "name": "scripts/mp/_load.gsc",
+      "hash": "487791de10e0940f"
+    },
+    {
+      "name": "weap_rex_mike4_fire_plr_01.qnn.85.48000.all",
+      "hash": "ad068d416d9cd379"
+    }
+  ],
+  "bo6-omnvar64": [
+    {
+      "name": "a",
+      "hash": "b0bc8966510c1428"
+    },
+    {
+      "name": "A",
+      "hash": "b0bc8966510c1428"
+    },
+    {
+      "name": "hello",
+      "hash": "9ff2c644c7ff54ab"
+    },
+    {
+      "name": "Weapons\\Rifle_Fire_01",
+      "hash": "4003ee797255e17a"
+    },
+    {
+      "name": "scripts/mp/_load.gsc",
+      "hash": "11393c355b25a268"
+    },
+    {
+      "name": "weap_rex_mike4_fire_plr_01.qnn.85.48000.all",
+      "hash": "142664f48c50ded2"
+    }
+  ],
+  "prime32": [
+    {
+      "name": "a",
+      "hash": "000000000002b606"
+    },
+    {
+      "name": "A",
+      "hash": "000000000002b606"
+    },
+    {
+      "name": "hello",
+      "hash": "000000000f923099"
+    },
+    {
+      "name": "Weapons\\Rifle_Fire_01",
+      "hash": "00000000779390e8"
+    },
+    {
+      "name": "scripts/mp/_load.gsc",
+      "hash": "00000000a3046f32"
+    },
+    {
+      "name": "weap_rex_mike4_fire_plr_01.qnn.85.48000.all",
+      "hash": "000000008e5d6af2"
+    }
+  ],
+  "djb2-xor32": [
+    {
+      "name": "a",
+      "hash": "0000000000000061"
+    },
+    {
+      "name": "A",
+      "hash": "0000000000000061"
+    },
+    {
+      "name": "hello",
+      "hash": "0000000007285842"
+    },
+    {
+      "name": "Weapons\\Rifle_Fire_01",
+      "hash": "000000002c1191b3"
+    },
+    {
+      "name": "scripts/mp/_load.gsc",
+      "hash": "0000000008805721"
+    },
+    {
+      "name": "weap_rex_mike4_fire_plr_01.qnn.85.48000.all",
+      "hash": "000000007ab8f4bb"
+    }
+  ],
+  "kvp64": [
+    {
+      "name": "a",
+      "hash": "0000000000002d1c"
+    },
+    {
+      "name": "A",
+      "hash": "0000000000002d1c"
+    },
+    {
+      "name": "hello",
+      "hash": "000000000000fbb7"
+    },
+    {
+      "name": "Weapons\\Rifle_Fire_01",
+      "hash": "00000000000405ca"
+    },
+    {
+      "name": "scripts/mp/_load.gsc",
+      "hash": "000000000003d8c4"
+    },
+    {
+      "name": "weap_rex_mike4_fire_plr_01.qnn.85.48000.all",
+      "hash": "000000000007e9d0"
+    }
+  ],
+  "sab-sdbm32": [
+    {
+      "name": "a",
+      "hash": "00000000150a2c9c"
+    },
+    {
+      "name": "A",
+      "hash": "00000000150a2c9c"
+    },
+    {
+      "name": "hello",
+      "hash": "000000003ba9aa6d"
+    },
+    {
+      "name": "Weapons\\Rifle_Fire_01",
+      "hash": "00000000faf97e89"
+    },
+    {
+      "name": "scripts/mp/_load.gsc",
+      "hash": "00000000239bdf0e"
+    },
+    {
+      "name": "weap_rex_mike4_fire_plr_01.qnn.85.48000.all",
+      "hash": "0000000095115a9e"
+    }
+  ],
+  "sab-fnv1a64": [
+    {
+      "name": "a",
+      "hash": "af63dc4c8601ec8c"
+    },
+    {
+      "name": "A",
+      "hash": "af63dc4c8601ec8c"
+    },
+    {
+      "name": "hello",
+      "hash": "a430d84680aabd0b"
+    },
+    {
+      "name": "Weapons\\Rifle_Fire_01",
+      "hash": "493e0ed5c56eeb05"
+    },
+    {
+      "name": "scripts/mp/_load.gsc",
+      "hash": "15eda7b9c6d9deda"
+    },
+    {
+      "name": "weap_rex_mike4_fire_plr_01.qnn.85.48000.all",
+      "hash": "b255359af5343388"
+    }
+  ],
+  "fnv1a64-raw": [
+    {
+      "name": "a",
+      "hash": "af63dc4c8601ec8c"
+    },
+    {
+      "name": "A",
+      "hash": "af63fc4c860222ec"
+    },
+    {
+      "name": "hello",
+      "hash": "a430d84680aabd0b"
+    },
+    {
+      "name": "Weapons\\Rifle_Fire_01",
+      "hash": "c0c44cc796b727e5"
+    },
+    {
+      "name": "scripts/mp/_load.gsc",
+      "hash": "15eda7b9c6d9deda"
+    },
+    {
+      "name": "weap_rex_mike4_fire_plr_01.qnn.85.48000.all",
+      "hash": "b255359af5343388"
+    }
+  ]
+}

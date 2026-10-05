@@ -1,0 +1,256 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="CODNameFinder.App.App"
+             RequestedThemeVariant="Dark">
+  <Application.Resources>
+    <Color x:Key="SystemAccentColor">#A2DFFF</Color>
+    <Color x:Key="SystemAccentColorDark1">#83BCF0</Color>
+    <Color x:Key="SystemAccentColorLight1">#D4C2F2</Color>
+    <x:Double x:Key="TextControlPlaceholderOpacity">1</x:Double>
+    <SolidColorBrush x:Key="GlassTextBrush">#F4F7FF</SolidColorBrush>
+    <SolidColorBrush x:Key="GlassSecondaryBrush">#C4D0E3</SolidColorBrush>
+    <SolidColorBrush x:Key="GlassBorderBrush">#627E91A8</SolidColorBrush>
+    <SolidColorBrush x:Key="GlassInputBrush">#99101927</SolidColorBrush>
+    <SolidColorBrush x:Key="GlassFocusBrush">#C0E8FF</SolidColorBrush>
+    <SolidColorBrush x:Key="GlassHoverBrush">#B9364961</SolidColorBrush>
+    <SolidColorBrush x:Key="GlassPressedBrush">#D41C2A3C</SolidColorBrush>
+    <LinearGradientBrush x:Key="GlassButtonBrush" StartPoint="0%,0%" EndPoint="100%,100%">
+      <GradientStop Color="#A746576F" Offset="0" />
+      <GradientStop Color="#902A394F" Offset="0.52" />
+      <GradientStop Color="#A31C2739" Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="GlassAccentBrush" StartPoint="0%,0%" EndPoint="100%,100%">
+      <GradientStop Color="#C3ECFF" Offset="0" />
+      <GradientStop Color="#ACD9FF" Offset="0.45" />
+      <GradientStop Color="#D2C1F0" Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="GlassAccentHoverBrush" StartPoint="0%,0%" EndPoint="100%,100%">
+      <GradientStop Color="#D5F4FF" Offset="0" />
+      <GradientStop Color="#B6E1FF" Offset="0.5" />
+      <GradientStop Color="#DDD0FF" Offset="1" />
+    </LinearGradientBrush>
+  </Application.Resources>
+  <Application.Styles>
+    <FluentTheme />
+    <Style Selector="Window">
+      <Setter Property="FontFamily" Value="Microsoft YaHei UI, Segoe UI" />
+      <Setter Property="FontSize" Value="13" />
+      <Setter Property="Foreground" Value="{StaticResource GlassTextBrush}" />
+      <Setter Property="Background" Value="#10131D" />
+    </Style>
+    <Style Selector="TextBlock">
+      <Setter Property="Foreground" Value="{StaticResource GlassTextBrush}" />
+    </Style>
+    <Style Selector="TextBlock.secondary">
+      <Setter Property="Foreground" Value="{StaticResource GlassSecondaryBrush}" />
+    </Style>
+    <Style Selector="TextBlock.section-title">
+      <Setter Property="FontSize" Value="14" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="SelectableTextBlock">
+      <Setter Property="Foreground" Value="{StaticResource GlassTextBrush}" />
+    </Style>
+    <Style Selector="TextBox">
+      <Setter Property="MinHeight" Value="34" />
+      <Setter Property="Padding" Value="11,6" />
+      <Setter Property="CornerRadius" Value="10" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="BorderBrush" Value="{StaticResource GlassBorderBrush}" />
+      <Setter Property="Background" Value="{StaticResource GlassInputBrush}" />
+      <Setter Property="Foreground" Value="{StaticResource GlassTextBrush}" />
+      <Setter Property="PlaceholderForeground" Value="#B1C3DB" />
+      <Setter Property="CaretBrush" Value="{StaticResource GlassFocusBrush}" />
+      <Setter Property="SelectionBrush" Value="#8866A4DF" />
+    </Style>
+    <Style Selector="TextBox:pointerover">
+      <Setter Property="BorderBrush" Value="#99A8CDE6" />
+    </Style>
+    <Style Selector="TextBox /template/ TextBlock#PART_Placeholder">
+      <Setter Property="Opacity" Value="1" />
+    </Style>
+    <Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">
+      <Setter Property="BorderBrush" Value="#99A8CDE6" />
+      <Setter Property="Background" Value="#B5223043" />
+    </Style>
+    <Style Selector="TextBox:focus-within">
+      <Setter Property="BorderBrush" Value="{StaticResource GlassFocusBrush}" />
+      <Setter Property="Background" Value="#DC152438" />
+    </Style>
+    <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+      <Setter Property="BorderBrush" Value="{StaticResource GlassFocusBrush}" />
+      <Setter Property="Background" Value="#DC152438" />
+      <Setter Property="BorderThickness" Value="1" />
+    </Style>
+    <Style Selector="TextBox:disabled">
+      <Setter Property="Opacity" Value="0.58" />
+    </Style>
+    <Style Selector="TextBox.log">
+      <Setter Property="MinHeight" Value="58" />
+      <Setter Property="Height" Value="72" />
+      <Setter Property="MaxHeight" Value="72" />
+      <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+      <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+      <Setter Property="Background" Value="#C4101521" />
+      <Setter Property="Foreground" Value="#CAD8EC" />
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="Padding" Value="10,6" />
+      <Setter Property="BorderBrush" Value="#375E7B98" />
+    </Style>
+    <Style Selector="ComboBox">
+      <Setter Property="MinHeight" Value="34" />
+      <Setter Property="Padding" Value="11,6" />
+      <Setter Property="CornerRadius" Value="10" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="BorderBrush" Value="{StaticResource GlassBorderBrush}" />
+      <Setter Property="Background" Value="{StaticResource GlassInputBrush}" />
+      <Setter Property="Foreground" Value="{StaticResource GlassTextBrush}" />
+    </Style>
+    <Style Selector="ComboBox:pointerover">
+      <Setter Property="BorderBrush" Value="#99A8CDE6" />
+      <Setter Property="Background" Value="{StaticResource GlassHoverBrush}" />
+    </Style>
+    <Style Selector="ComboBox:pointerover /template/ Border#Background">
+      <Setter Property="BorderBrush" Value="#99A8CDE6" />
+      <Setter Property="Background" Value="{StaticResource GlassHoverBrush}" />
+    </Style>
+    <Style Selector="ComboBox:pressed /template/ Border#Background">
+      <Setter Property="BorderBrush" Value="{StaticResource GlassFocusBrush}" />
+      <Setter Property="Background" Value="{StaticResource GlassPressedBrush}" />
+    </Style>
+    <Style Selector="ComboBox:focus-visible">
+      <Setter Property="BorderBrush" Value="{StaticResource GlassFocusBrush}" />
+    </Style>
+    <Style Selector="ComboBox:focus-visible /template/ Border#HighlightBackground">
+      <Setter Property="BorderBrush" Value="{StaticResource GlassFocusBrush}" />
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="ComboBox /template/ Border#PopupBorder">
+      <Setter Property="CornerRadius" Value="12" />
+      <Setter Property="Background" Value="#F51C2739" />
+      <Setter Property="BorderBrush" Value="#8291BDD9" />
+    </Style>
+    <Style Selector="ComboBox:disabled">
+      <Setter Property="Opacity" Value="0.58" />
+    </Style>
+    <Style Selector="ComboBoxItem">
+      <Setter Property="MinHeight" Value="32" />
+      <Setter Property="Padding" Value="12,6" />
+      <Setter Property="Foreground" Value="{StaticResource GlassTextBrush}" />
+    </Style>
+    <Style Selector="ComboBoxItem:pointerover">
+      <Setter Property="Background" Value="#B63C506B" />
+      <Setter Property="Foreground" Value="{StaticResource GlassTextBrush}" />
+    </Style>
+    <Style Selector="ComboBoxItem:selected">
+      <Setter Property="Background" Value="#D3456080" />
+      <Setter Property="Foreground" Value="{StaticResource GlassTextBrush}" />
+    </Style>
+    <Style Selector="NumericUpDown">
+      <Setter Property="MinHeight" Value="34" />
+      <Setter Property="CornerRadius" Value="10" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="BorderBrush" Value="{StaticResource GlassBorderBrush}" />
+      <Setter Property="Background" Value="{StaticResource GlassInputBrush}" />
+      <Setter Property="Foreground" Value="{StaticResource GlassTextBrush}" />
+    </Style>
+    <Style Selector="NumericUpDown:focus-within">
+      <Setter Property="BorderBrush" Value="{StaticResource GlassFocusBrush}" />
+    </Style>
+    <Style Selector="CheckBox">
+      <Setter Property="MinHeight" Value="32" />
+      <Setter Property="Foreground" Value="{StaticResource GlassTextBrush}" />
+    </Style>
+    <Style Selector="CheckBox:disabled">
+      <Setter Property="Opacity" Value="0.58" />
+    </Style>
+    <Style Selector="Button">
+      <Setter Property="MinHeight" Value="34" />
+      <Setter Property="Padding" Value="14,6" />
+      <Setter Property="CornerRadius" Value="11" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="BorderBrush" Value="#719CB1C9" />
+      <Setter Property="Background" Value="{StaticResource GlassButtonBrush}" />
+      <Setter Property="Foreground" Value="{StaticResource GlassTextBrush}" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="RenderTransform" Value="none" />
+    </Style>
+    <Style Selector="Button:pointerover">
+      <Setter Property="BorderBrush" Value="#BECEE5F9" />
+      <Setter Property="Background" Value="{StaticResource GlassHoverBrush}" />
+    </Style>
+    <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="BorderBrush" Value="#BECEE5F9" />
+      <Setter Property="Background" Value="{StaticResource GlassHoverBrush}" />
+      <Setter Property="Foreground" Value="{StaticResource GlassTextBrush}" />
+    </Style>
+    <Style Selector="Button:pressed">
+      <Setter Property="Background" Value="{StaticResource GlassPressedBrush}" />
+      <Setter Property="BorderBrush" Value="#D2A6CBE9" />
+      <Setter Property="RenderTransform" Value="none" />
+    </Style>
+    <Style Selector="Button:pressed /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{StaticResource GlassPressedBrush}" />
+      <Setter Property="BorderBrush" Value="#D2A6CBE9" />
+      <Setter Property="Foreground" Value="{StaticResource GlassTextBrush}" />
+    </Style>
+    <Style Selector="Button:focus-visible">
+      <Setter Property="BorderBrush" Value="{StaticResource GlassFocusBrush}" />
+      <Setter Property="BorderThickness" Value="2" />
+      <Setter Property="Padding" Value="13,5" />
+    </Style>
+    <Style Selector="Button:disabled">
+      <Setter Property="Opacity" Value="0.6" />
+      <Setter Property="Background" Value="#731E2E45" />
+    </Style>
+    <Style Selector="Button:disabled /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="#731E2E45" />
+      <Setter Property="BorderBrush" Value="#4865819F" />
+      <Setter Property="Foreground" Value="#B1C3DB" />
+    </Style>
+    <Style Selector="Button.primary">
+      <Setter Property="MinHeight" Value="44" />
+      <Setter Property="CornerRadius" Value="14" />
+      <Setter Property="FontSize" Value="15" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="Foreground" Value="#11233B" />
+      <Setter Property="Background" Value="{StaticResource GlassAccentBrush}" />
+      <Setter Property="BorderBrush" Value="#E4EDF9FF" />
+    </Style>
+    <Style Selector="Button.primary:pointerover">
+      <Setter Property="Background" Value="{StaticResource GlassAccentHoverBrush}" />
+      <Setter Property="Foreground" Value="#0B1C31" />
+    </Style>
+    <Style Selector="Button.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{StaticResource GlassAccentHoverBrush}" />
+      <Setter Property="BorderBrush" Value="#E4EDF9FF" />
+      <Setter Property="Foreground" Value="#0B1C31" />
+    </Style>
+    <Style Selector="Button.primary:pressed">
+      <Setter Property="Background" Value="#8DB9E8" />
+      <Setter Property="Foreground" Value="#0B1C31" />
+    </Style>
+    <Style Selector="Button.primary:pressed /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="#8DB9E8" />
+      <Setter Property="BorderBrush" Value="#CDE9FF" />
+      <Setter Property="Foreground" Value="#0B1C31" />
+    </Style>
+    <Style Selector="Button.primary:disabled">
+      <Setter Property="Background" Value="#7B99B8" />
+      <Setter Property="Foreground" Value="#0B1C31" />
+    </Style>
+    <Style Selector="Button.primary:disabled /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="#7B99B8" />
+      <Setter Property="Foreground" Value="#0B1C31" />
+    </Style>
+    <Style Selector="Button.action">
+      <Setter Property="MinHeight" Value="44" />
+      <Setter Property="CornerRadius" Value="14" />
+    </Style>
+    <Style Selector="ProgressBar">
+      <Setter Property="CornerRadius" Value="4" />
+      <Setter Property="Background" Value="#9712223B" />
+      <Setter Property="Foreground" Value="{StaticResource GlassAccentBrush}" />
+    </Style>
+  </Application.Styles>
+</Application>

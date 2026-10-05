@@ -1,0 +1,21 @@
+{
+  "slots": [
+    [
+      "weapons/standalone_"
+    ],
+    [
+      "old",
+      "new"
+    ],
+    [
+      ".snd"
+    ]
+  ],
+  "profiles": [
+    "iw-resource63"
+  ],
+  "backend": "cpu",
+  "duty": 75,
+  "budget": 1000,
+  "seconds": 60
+}

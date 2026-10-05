@@ -1,0 +1,20 @@
+{
+  "generator": "image_gen (built-in)",
+  "prompt": "Use case: logo-brand. Asset type: production Windows desktop application icon for COD Name Finder, a software tool that searches candidate real asset filenames and verifies them against hashes. Create ONE original polished app icon, square composition. A bold, compact hash symbol (#) is the principal recognizable mark, integrated with a simple magnifying-glass lens suggesting identification and verification; keep a single coherent emblem, with very few thick geometric shapes. Match a professional dark Avalonia desktop interface: deep navy (#111b28), cool white, restrained cyan, and lavender-purple (#7771b8). Large clean silhouettes and generous negative space so it remains legible at 16, 24 and 32 pixels. A softly rounded navy tile may form the icon body, subtle dimensional bevel/light but mostly crisp graphic surfaces. Center the symbol; the tile/emblem occupies about 88% of the square. Outside the rounded tile is genuinely transparent alpha. Deliver a sharp 1024x1024 PNG on a transparent background. No captions, no lettering except the hash symbol, no miniature filenames or numbers, no screenshot, no presentation mockup, no multiple options, no watermark, no existing game/company logo, no weapons. Main idea: a hashed filename is found and recognized.",
+  "png": "assets/cod-name-finder.png",
+  "windows_icon": "assets/cod-name-finder.ico",
+  "transparent_background": true,
+  "icon_sizes": [
+    16,
+    20,
+    24,
+    32,
+    40,
+    48,
+    64,
+    96,
+    128,
+    256
+  ],
+  "conversion": "PNG to Windows ICO container; generated artwork and alpha preserved."
+}

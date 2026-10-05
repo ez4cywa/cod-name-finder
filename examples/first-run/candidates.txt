@@ -1,0 +1,2 @@
+weapons/standalone_old.snd
+weapons/standalone_new.snd

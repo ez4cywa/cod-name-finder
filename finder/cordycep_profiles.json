@@ -1,0 +1,576 @@
+{
+  "version": 1,
+  "source": "Local Cordycep 2.9.0.0 builds independently fingerprinted on 2026-10-05; legacy loader field retained for snapshot compatibility; no loader/game binaries are distributed",
+  "loader": {
+    "filename": "Cordycep.CLI.exe",
+    "file_version": "2.9.0.0",
+    "sha256": "fe43506a599fd84472c81599ace976b6ee6cde8b545745ea7ff0e3046fe1e1e7"
+  },
+  "preferred_loader_sha256": "a3a700bd4080f1d3eb7ee7084e0f42abc597c33f5a6eeded154105239f43b6f9",
+  "loader_builds": [
+    {
+      "filename": "Cordycep.CLI.exe",
+      "file_version": "2.9.0.0",
+      "sha256": "fe43506a599fd84472c81599ace976b6ee6cde8b545745ea7ff0e3046fe1e1e7",
+      "adapter": "cordycep-pool40-node96-v1",
+      "games": {
+        "COD2026": {
+          "config_sha256": "3456739384d434ce14e0f77f044c6539959bf6f98737bfdd5c04899f85530f31",
+          "module_sha256": "428309e60147007e26a86b329fea6703ebd0bce6937aa6c5fa17fda4ed89f7b5",
+          "verification": "runtime_verified"
+        },
+        "BO7": {
+          "config_sha256": "2243f645db9804ec2ab8f1a7cd4ab1872a8d122af207945e823343845665883a",
+          "module_sha256": "6ccc9ef5af213d9047f64a5a1212d06047ecc008eeb56f17ef6841511ff1fc4a",
+          "verification": "static_pending_runtime"
+        }
+      }
+    },
+    {
+      "filename": "Cordycep.CLI.exe",
+      "file_version": "2.9.0.0",
+      "sha256": "a3a700bd4080f1d3eb7ee7084e0f42abc597c33f5a6eeded154105239f43b6f9",
+      "adapter": "cordycep-pool40-node96-v1",
+      "games": {
+        "COD2026": {
+          "config_sha256": "3456739384d434ce14e0f77f044c6539959bf6f98737bfdd5c04899f85530f31",
+          "module_sha256": "428309e60147007e26a86b329fea6703ebd0bce6937aa6c5fa17fda4ed89f7b5",
+          "verification": "runtime_verified"
+        },
+        "BO7": {
+          "config_sha256": "2243f645db9804ec2ab8f1a7cd4ab1872a8d122af207945e823343845665883a",
+          "module_sha256": "6ccc9ef5af213d9047f64a5a1212d06047ecc008eeb56f17ef6841511ff1fc4a",
+          "verification": "static_pending_runtime"
+        }
+      }
+    }
+  ],
+  "state": {
+    "json": "Data/CurrentHandler.json",
+    "json_required_fields": [
+      "pid",
+      "game_id",
+      "pools_addr",
+      "strings_addr"
+    ],
+    "csi": "Data/CurrentHandler.csi",
+    "csi_minimum_bytes": 24,
+    "game_id_encoding": "uint64-little-endian ASCII, trim trailing NUL only",
+    "prefer_json_pid_match": true,
+    "csi_local_extension": {
+      "after_offset": 24,
+      "game_dir_length": "uint32-le",
+      "game_dir": "utf8 exact length",
+      "flags_count": "uint32-le",
+      "flags_entries": "uint32-le byte length, then UTF-8 flag",
+      "str_pool_size_addr_present": false,
+      "status": "Observed in local 2.9.0.0 MODWAR7 beta state only"
+    }
+  },
+  "layout": {
+    "id": "cordycep-pool40-node96-v1",
+    "pool_count": 512,
+    "pool_stride": 40,
+    "pool_fields": {
+      "root": 0,
+      "end": 8,
+      "lookup_table": 16,
+      "header_memory": 24,
+      "asset_memory": 32
+    },
+    "node_prefix_size": 96,
+    "node_fields": {
+      "header": 0,
+      "temp": 8,
+      "next": 16,
+      "previous": 24,
+      "raw_id": 32,
+      "kind": 40,
+      "header_size": 48,
+      "extended_data_pointer_offset": 56,
+      "extended_data_size": 64,
+      "first_child": 72,
+      "last_child": 80,
+      "owner": 88
+    },
+    "word_bytes": 8,
+    "endian": "little",
+    "linked_list_not_contiguous": true,
+    "root_sentinel": {
+      "header": 0,
+      "raw_id": 0,
+      "kind": 4294967295
+    },
+    "runtime_checks": [
+      "selected PID equals JSON pid",
+      "state stable before/after read",
+      "mapped PE SHA256 matches profile module_sha256",
+      "config SHA256 matches profile config_sha256",
+      "pool array readable",
+      "sentinel skipped",
+      "live node.kind equals pool index",
+      "header nonzero and temp zero",
+      "no cycle or pointer read failure"
+    ],
+    "preserve_raw_key_width": 64,
+    "do_not_globally_mask_keys": true
+  },
+  "profiles": {
+    "COD2026": {
+      "game_ids": [
+        "MODWAR7"
+      ],
+      "game_id_evidence": "runtime_observed",
+      "config": "CoDMW7HandlerBeta.toml",
+      "config_sha256": "3456739384d434ce14e0f77f044c6539959bf6f98737bfdd5c04899f85530f31",
+      "module": "Data/Dumps/cod26-cod_dump.exe",
+      "module_sha256": "428309e60147007e26a86b329fea6703ebd0bce6937aa6c5fa17fda4ed89f7b5",
+      "type_names_table_rva": "0xc8018a0",
+      "type_names_table_raw": "0xc800ca0",
+      "type_names_count": 414,
+      "type_names_sha256": "aa403e9fc2d6d2f0dc3b4d06a2134e6f73e417ccac1677be29a984b6d2f2b345",
+      "runtime_verified_pool_ids": [
+        0,
+        6,
+        7,
+        10,
+        14,
+        26,
+        27,
+        55,
+        56,
+        57,
+        63,
+        64,
+        65,
+        66,
+        87,
+        110,
+        116,
+        186
+      ],
+      "requires_runtime_node_kind_check": true,
+      "requires_exact_module_and_config": true,
+      "pools": {
+        "6": {
+          "kind": "xanim",
+          "type_name": "xanim",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod26-cod_dump.exe type-name table RVA 0xc8018a0; exact PE/config SHA256",
+          "mapping_status": "runtime_structure_verified"
+        },
+        "10": {
+          "kind": "material",
+          "type_name": "material",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod26-cod_dump.exe type-name table RVA 0xc8018a0; exact PE/config SHA256",
+          "mapping_status": "runtime_structure_verified"
+        },
+        "14": {
+          "kind": "image",
+          "type_name": "image",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod26-cod_dump.exe type-name table RVA 0xc8018a0; exact PE/config SHA256",
+          "mapping_status": "runtime_structure_verified"
+        },
+        "26": {
+          "kind": "soundbank",
+          "type_name": "soundbank",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod26-cod_dump.exe type-name table RVA 0xc8018a0; exact PE/config SHA256",
+          "mapping_status": "runtime_structure_verified"
+        },
+        "27": {
+          "kind": "soundbanktransient",
+          "type_name": "soundbanktransient",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod26-cod_dump.exe type-name table RVA 0xc8018a0; exact PE/config SHA256",
+          "mapping_status": "runtime_structure_verified"
+        },
+        "55": {
+          "kind": "localize",
+          "type_name": "localize",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod26-cod_dump.exe type-name table RVA 0xc8018a0; exact PE/config SHA256",
+          "mapping_status": "runtime_structure_verified"
+        },
+        "56": {
+          "kind": "attachment",
+          "type_name": "attachment",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod26-cod_dump.exe type-name table RVA 0xc8018a0; exact PE/config SHA256",
+          "mapping_status": "runtime_structure_verified"
+        },
+        "57": {
+          "kind": "weapon",
+          "type_name": "weapon",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod26-cod_dump.exe type-name table RVA 0xc8018a0; exact PE/config SHA256",
+          "mapping_status": "runtime_structure_verified"
+        },
+        "63": {
+          "kind": "rawfile",
+          "type_name": "rawfile",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod26-cod_dump.exe type-name table RVA 0xc8018a0; exact PE/config SHA256",
+          "mapping_status": "runtime_structure_verified"
+        },
+        "64": {
+          "kind": "scriptfile",
+          "type_name": "gscobj",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod26-cod_dump.exe type-name table RVA 0xc8018a0; exact PE/config SHA256",
+          "mapping_status": "runtime_structure_verified"
+        },
+        "65": {
+          "kind": "scriptfile",
+          "type_name": "gscgdb",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod26-cod_dump.exe type-name table RVA 0xc8018a0; exact PE/config SHA256",
+          "mapping_status": "runtime_structure_verified"
+        },
+        "66": {
+          "kind": "stringtable",
+          "type_name": "stringtable",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod26-cod_dump.exe type-name table RVA 0xc8018a0; exact PE/config SHA256",
+          "mapping_status": "runtime_structure_verified"
+        },
+        "87": {
+          "kind": "animpkg",
+          "type_name": "animpkg",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod26-cod_dump.exe type-name table RVA 0xc8018a0; exact PE/config SHA256",
+          "mapping_status": "runtime_structure_verified"
+        },
+        "110": {
+          "kind": "scriptbundle",
+          "type_name": "scriptbundle",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod26-cod_dump.exe type-name table RVA 0xc8018a0; exact PE/config SHA256",
+          "mapping_status": "runtime_structure_verified"
+        },
+        "116": {
+          "kind": "keyvaluepairs",
+          "type_name": "keyvaluepairs",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod26-cod_dump.exe type-name table RVA 0xc8018a0; exact PE/config SHA256",
+          "mapping_status": "runtime_structure_verified"
+        },
+        "186": {
+          "kind": "sndasset",
+          "type_name": "sndasset",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod26-cod_dump.exe type-name table RVA 0xc8018a0; exact PE/config SHA256",
+          "mapping_status": "runtime_structure_verified"
+        }
+      },
+      "excluded_model_pool_ids": [
+        7,
+        8
+      ],
+      "unmapped_name_domains": [
+        "structuredtable",
+        "soundbankalias",
+        "bone",
+        "scriptfield",
+        "dvar",
+        "omnvar"
+      ],
+      "unmapped_behavior": "Preserve raw key plus pool id without assigning an asset kind or a name hash profile",
+      "nested_name_warning": "soundbank aliases, bone strings and script/dvar/omnvar symbols are nested domains; generic asset-node ID does not represent their hashes",
+      "handler_flags": [
+        "beta"
+      ],
+      "observed_capture_scope": {
+        "status": "All 16 mapped non-model pools stable across repeated read-only capture; current loaded set only",
+        "unknown_pools_stable": false,
+        "whole_snapshot_stable": false,
+        "unstable_unknown_pool_examples": [
+          42,
+          76,
+          127,
+          128,
+          381
+        ],
+        "name_compute_unknown_pools": false
+      }
+    },
+    "BO7": {
+      "game_ids": [
+        "BLACKOP7"
+      ],
+      "game_id_evidence": "static_loader_literal",
+      "config": "CoDBO7Handler.toml",
+      "config_sha256": "2243f645db9804ec2ab8f1a7cd4ab1872a8d122af207945e823343845665883a",
+      "module": "Data/Dumps/cod_dump.exe",
+      "module_sha256": "6ccc9ef5af213d9047f64a5a1212d06047ecc008eeb56f17ef6841511ff1fc4a",
+      "type_names_table_rva": "0xb2c5a10",
+      "type_names_table_raw": "0xb2c4c10",
+      "type_names_count": 408,
+      "type_names_sha256": "6b80f1f27fdac1c71fb26d8bf93d6b86cad6e4d10a3d2d5bcfa2811532efd8c6",
+      "runtime_verified_pool_ids": [],
+      "requires_runtime_node_kind_check": true,
+      "requires_exact_module_and_config": true,
+      "pools": {
+        "6": {
+          "kind": "xanim",
+          "type_name": "xanim",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod_dump.exe type-name table RVA 0xb2c5a10; exact PE/config SHA256",
+          "mapping_status": "static_type_table_requires_runtime_check"
+        },
+        "10": {
+          "kind": "material",
+          "type_name": "material",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod_dump.exe type-name table RVA 0xb2c5a10; exact PE/config SHA256",
+          "mapping_status": "static_type_table_requires_runtime_check"
+        },
+        "14": {
+          "kind": "image",
+          "type_name": "image",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod_dump.exe type-name table RVA 0xb2c5a10; exact PE/config SHA256",
+          "mapping_status": "static_type_table_requires_runtime_check"
+        },
+        "26": {
+          "kind": "soundbank",
+          "type_name": "soundbank",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod_dump.exe type-name table RVA 0xb2c5a10; exact PE/config SHA256",
+          "mapping_status": "static_type_table_requires_runtime_check"
+        },
+        "27": {
+          "kind": "soundbanktransient",
+          "type_name": "soundbanktransient",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod_dump.exe type-name table RVA 0xb2c5a10; exact PE/config SHA256",
+          "mapping_status": "static_type_table_requires_runtime_check"
+        },
+        "55": {
+          "kind": "localize",
+          "type_name": "localize",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod_dump.exe type-name table RVA 0xb2c5a10; exact PE/config SHA256",
+          "mapping_status": "static_type_table_requires_runtime_check"
+        },
+        "56": {
+          "kind": "attachment",
+          "type_name": "attachment",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod_dump.exe type-name table RVA 0xb2c5a10; exact PE/config SHA256",
+          "mapping_status": "static_type_table_requires_runtime_check"
+        },
+        "57": {
+          "kind": "weapon",
+          "type_name": "weapon",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod_dump.exe type-name table RVA 0xb2c5a10; exact PE/config SHA256",
+          "mapping_status": "static_type_table_requires_runtime_check"
+        },
+        "63": {
+          "kind": "rawfile",
+          "type_name": "rawfile",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod_dump.exe type-name table RVA 0xb2c5a10; exact PE/config SHA256",
+          "mapping_status": "static_type_table_requires_runtime_check"
+        },
+        "64": {
+          "kind": "scriptfile",
+          "type_name": "gscobj",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod_dump.exe type-name table RVA 0xb2c5a10; exact PE/config SHA256",
+          "mapping_status": "static_type_table_requires_runtime_check"
+        },
+        "65": {
+          "kind": "scriptfile",
+          "type_name": "gscgdb",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod_dump.exe type-name table RVA 0xb2c5a10; exact PE/config SHA256",
+          "mapping_status": "static_type_table_requires_runtime_check"
+        },
+        "66": {
+          "kind": "stringtable",
+          "type_name": "stringtable",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod_dump.exe type-name table RVA 0xb2c5a10; exact PE/config SHA256",
+          "mapping_status": "static_type_table_requires_runtime_check"
+        },
+        "87": {
+          "kind": "animpkg",
+          "type_name": "animpkg",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod_dump.exe type-name table RVA 0xb2c5a10; exact PE/config SHA256",
+          "mapping_status": "static_type_table_requires_runtime_check"
+        },
+        "110": {
+          "kind": "scriptbundle",
+          "type_name": "scriptbundle",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod_dump.exe type-name table RVA 0xb2c5a10; exact PE/config SHA256",
+          "mapping_status": "static_type_table_requires_runtime_check"
+        },
+        "116": {
+          "kind": "keyvaluepairs",
+          "type_name": "keyvaluepairs",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod_dump.exe type-name table RVA 0xb2c5a10; exact PE/config SHA256",
+          "mapping_status": "static_type_table_requires_runtime_check"
+        },
+        "186": {
+          "kind": "sndasset",
+          "type_name": "sndasset",
+          "profile": "iw-resource63",
+          "hash_domain": "asset",
+          "key_width": 63,
+          "stored_key_width": 64,
+          "stored_mask": "7fffffffffffffff",
+          "mapping_source": "cod_dump.exe type-name table RVA 0xb2c5a10; exact PE/config SHA256",
+          "mapping_status": "static_type_table_requires_runtime_check"
+        }
+      },
+      "excluded_model_pool_ids": [
+        7,
+        8
+      ],
+      "unmapped_name_domains": [
+        "structuredtable",
+        "soundbankalias",
+        "bone",
+        "scriptfield",
+        "dvar",
+        "omnvar"
+      ],
+      "unmapped_behavior": "Preserve raw key plus pool id without assigning an asset kind or a name hash profile",
+      "nested_name_warning": "soundbank aliases, bone strings and script/dvar/omnvar symbols are nested domains; generic asset-node ID does not represent their hashes",
+      "handler_flags": [
+        "default"
+      ]
+    }
+  }
+}

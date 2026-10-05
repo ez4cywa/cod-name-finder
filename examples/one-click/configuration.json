@@ -1,0 +1,8 @@
+{
+  "folder": "REPLACE_WITH_INSTALLED_EXAMPLES/one-click/hashed-assets",
+  "indexes": "REPLACE_WITH_INSTALLED_EXAMPLES/one-click/existing-indexes",
+  "output": "REPLACE_WITH_INDEPENDENT_OUTPUT_FOLDER",
+  "profile": "iw-resource63",
+  "asset_type": "xanim",
+  "backend": "cpu"
+}
