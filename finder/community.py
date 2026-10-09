@@ -15,6 +15,7 @@ import urllib.request
 from urllib.parse import urlparse
 from .hashing import PROFILES, parse_hash
 from .registry import table_rule
+from .spellings import resolve_table_spelling
 
 REPOSITORY = 'echo000/cod-name-db'
 MAX_FILE_BYTES = 128 * 1024 * 1024
@@ -139,6 +140,7 @@ def iter_csv_rows(path):
 def iter_community(csv_dir, selected_profile=None, borrowed=False):
     """Stream CommunityRow; only status=verified may calibrate or exclude.
 
+    Display spellings must recover to their source-table key before verification.
     Unknown tables and hash/name mismatches are quarantined. ``borrowed=True``
     forces candidate-only provenance even for mathematically valid source rows.
     selected_profile limits tables; it never relabels their hash algorithm.
@@ -161,9 +163,11 @@ def iter_community(csv_dir, selected_profile=None, borrowed=False):
             if borrowed:
                 yield CommunityRow(key, name, path.stem, kind, None, 'borrowed', 'candidate-only-cross-title', index)
                 continue
-            matched = next((pid for pid in expected if PROFILES[pid].digest(name) == key), None)
+            restored = resolve_table_spelling(path, key, name)
+            matched = next((pid for pid in expected
+                            if restored is not None and PROFILES[pid].digest(restored) == key), None)
             if matched:
-                yield CommunityRow(key, name, path.stem, kind, matched, 'verified', 'exact-table-profile-rehash', index)
+                yield CommunityRow(key, restored, path.stem, kind, matched, 'verified', 'exact-table-profile-rehash', index)
             else:
                 yield CommunityRow(key, name, path.stem, kind, None, 'quarantined',
                                    'name-hash-mismatch' if expected else 'unknown-table-domain', index)

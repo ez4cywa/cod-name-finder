@@ -1,8 +1,8 @@
 # COD Name Finder
 
-版本 2.2.2。Windows 11 x64 资产名称计算工具：从导出的哈希文件夹或离线资产快照读取目标，用可信名称、作品模板和关联资产线索生成候选，完整键命中并独立回算后输出 Saluki CDB 与新增名称 CSV。模型可提供已经解析的名称线索，未知模型不作为目标。
+版本 2.3.0（最终验证报告随发行附件提供）。Windows 11 x64 资产名称计算工具：从导出的哈希文件夹或离线资产快照读取目标，用可信名称、作品模板和关联资产线索生成候选，完整键命中并独立回算后输出 Saluki CDB 与新增名称 CSV。模型可提供已经解析的名称线索，未知模型不作为目标。
 
-下载 Windows 安装包：[CODNameFinder-2.2.2-Setup.exe](https://github.com/ez4cywa/cod-name-finder/releases/download/v2.2.2/CODNameFinder-2.2.2-Setup.exe)。[发布页与校验文件](https://github.com/ez4cywa/cod-name-finder/releases/tag/v2.2.2)提供对应版本的源码和 SHA256，验证范围见[2.2.2 发布说明](docs/release-2.2.2.zh-CN.md)。随包教程可在界面点击“使用教程 · F1”打开，也可在线阅读[完整使用教程](docs/user-guide.zh-CN.md)。
+Windows 安装包：[CODNameFinder-2.3.0-Setup.exe](https://github.com/ez4cywa/cod-name-finder/releases/download/v2.3.0/CODNameFinder-2.3.0-Setup.exe)。[发布页](https://github.com/ez4cywa/cod-name-finder/releases/tag/v2.3.0)提供对应源码、SHA256和最终验证清单，实施与验收范围见[2.3.0 发布说明](docs/release-2.3.0.zh-CN.md)。历史 [2.2.2 发行版](https://github.com/ez4cywa/cod-name-finder/releases/tag/v2.2.2)保留。随包教程可在界面点击“使用教程 · F1”打开，也可在线阅读[完整使用教程](docs/user-guide.zh-CN.md)。
 
 界面采用 Avalonia、液态玻璃风格与 .NET NativeAOT；文件处理继续由随包提供的 Python 后端完成，Rust CPU 和 OpenCL GPU 负责匹配。新电脑使用文件夹或完整快照计算时，无需另装 Python、.NET、Rust、Git、Ghidra、游戏或 Cordycep。捕获新快照的电脑使用用户自己安装的兼容加载器和游戏文件。名称计算默认在本地运行，社区同步须由用户显式启用。
 
@@ -10,7 +10,7 @@
 
 ## 拿到工具先做什么
 
-1. 退出旧版，运行 `CODNameFinder-2.2.2-Setup.exe`，从开始菜单启动；保留完整安装目录。
+1. 退出旧版，运行 `CODNameFinder-2.3.0-Setup.exe`，从开始菜单启动；保留完整安装目录。
 2. 将实际 Saluki 的 `hash_pkg` 复制到本机独立数据目录。新电脑无需运行 Saluki，示例索引只能测试流程。
 3. 点击“使用教程 · F1”，先用 `examples/one-click` 的占位动画跑通一次。
 4. 选择“已导出的哈希文件夹”或“离线资产快照 · JSON / IDS”，填入目标目录或完整捕获目录中的 `snapshot.json`。选择作品、名称域、规则、资产类型、已有CDB索引与独立输出目录。动画或声音可保留关联名称推测。
@@ -19,7 +19,18 @@
 
 完整离线教程在 [docs/user-guide.zh-CN.md](docs/user-guide.zh-CN.md)，主窗口和教程均支持 F1。小窗口可滚动输入区域，计算、停止和结果操作保留在下方。
 
-## 2.2.2 的本地 Cordycep 与 BAT 启动
+## 2.3.0 上游更新适配
+
+本版依据 hash-slinging-slasher 的 `main` 提交 [dbe25197](https://github.com/KingslayerKyle/hash-slinging-slasher/commit/dbe25197cee05b8315b4effff1841ed4868152f0) 与 [PR #2464](https://github.com/KingslayerKyle/hash-slinging-slasher/pull/2464)、[#2465](https://github.com/KingslayerKyle/hash-slinging-slasher/pull/2465)、[#2466](https://github.com/KingslayerKyle/hash-slinging-slasher/pull/2466) 的命名关系独立实现改进，保留“输入 → 估算 → 确认 → 导出”的界面流程。GPL 上游代码未复制到 MIT 应用。
+
+- 现代 `CODIDS v1` 支持 MWII、MWIII、BO6、BO7、COD2026。必须把 `.ids` 和同名 `.pools.txt` 放在一起，按捕获清单的真实类型识别，不能套本地实时加载器的数字池号。63位 alias 不能充当现代满64位 alias 的正式目标。
+- 社区表音频显示路径只在恢复拼写后通过原表键完整回算时成为可信种子；普通文本、外作 donor 和未回算显示名继续只作候选。
+- 关联推测增加声音重复命名空间同步替换、目标 alias 缺失文件族探索，以及编码尾前的末字节反求。声音计划最多100万候选、128条；两条规则同时可用时，为namespace预留至多四分之一额度，避免alias占满计划。末字节准备限800万字节运算与桶探测合计工作量、8万个归一化前缀及1万条候选，再受本次总预算约束。
+- 类型明确且已回算的动画可提供声音 alias 词法线索，武器槽名称可关联图片／材质模板；模板必须来自当前目标的同类型、同 profile 完整键。新规则仍由“根据已知名称推测关联资产”开关控制，Saluki 已有名称排除保持生效。
+
+已对上游五份公开快照进行实际只读导入验证：9,513,578条原始记录，340,229个动画目标；这些是输入数据数量，不是新发现数量或全游戏覆盖承诺。[更新依据、实现与验证边界](docs/upstream-update-20261009.zh-CN.md)列出详细规则。上游声音 take 解析修正另提交为 [PR #2467](https://github.com/KingslayerKyle/hash-slinging-slasher/pull/2467)，其合并状态独立于本地实现。
+
+## 本地 Cordycep 与 BAT 启动
 
 界面提供“读取已加载实例”和“运行所选 BAT 并捕获”。选择 Cordycep 目录后，启动脚本下拉列出目录根的 `.bat`；“刷新 BAT”保留当前选择，切换目录或作品时优先选择 `RunMW7Beta.bat` / `RunBO7.bat`。脚本名可包含中文和空格，偏好随目录保存，运行时不能修改。
 
@@ -31,7 +42,7 @@
 
 增强快照保留raw64键、来源SHA和候选字符串。现代正式计算范围为16个已适配非模型池；未知池仅诊断，模型排除，字符串仅生成候选。`complete` 表示当前加载集合内已适配范围稳定，不承诺整款游戏完整，也不要求未知诊断池全部稳定。银行alias、骨骼、脚本符号、Dvar及Omnvar嵌套哈希没有凭通用node ID自动解锁。
 
-捕获后选择 `snapshot.json`，按既有估算、确认、独立回算及Saluki增量流程运行。把整个 `capture-*` 目录和自己的实际索引复制到新电脑即可离线计算。兼容导入原项目BO4/BOCW `.ids`，其数据已损失最高位，只提供63位证据；现代JSON及附件是首选输入。软件不捆绑Cordycep、游戏文件、授权资料或公共整份快照。
+捕获后选择 `snapshot.json`，按既有估算、确认、独立回算及Saluki增量流程运行。把整个 `capture-*` 目录和自己的实际索引复制到新电脑即可离线计算。兼容导入原项目BO4/BOCW和上述五部现代作品的 `.ids`；现代 `.ids` 强制附带同名池清单，最高位已丢失，不能提升为满64位证据。保留raw64的增强JSON及附件是完整键计算的首选输入。软件不捆绑Cordycep、游戏文件、授权资料或公共整份快照。
 
 ## 名称计算功能
 
@@ -44,7 +55,7 @@
 
 支持21种非模型类型，兼容 `anim_` / `xanim_`、`sound_` / `xsound_`、`sndbank_`、`animpkg_` 等文件名前缀。材质可排除。音频导出把目录反斜杠改成下划线时不会全局逆替换，因为下划线也可能是原名的一部分。
 
-关联名称推测从已有索引和可选的已命名模型、图像、材质、武器名称中提取身份词段，按真实动画/声音模板组合；最多800万组合、512个计划，再受总预算限制。关键词在命中后筛选，有限搜索不能保证全部资产都能命名。
+原有关联名称推测从已有索引和可选的已命名模型、图像、材质、武器名称中提取身份词段，按真实动画/声音模板组合，保留最多800万组合、512个计划的上限；2.3.0 的额外规则分别记录各自上限，全部继续受同一本次总预算限制。没有原始键的名称只能生成候选，只有命中当前同类型完整目标并回算通过后，才可用于学习目标命名惯例。关键词在命中后筛选，有限搜索不能保证全部资产都能命名。
 
 ## 结果与数据
 
@@ -91,7 +102,7 @@ python scripts/validate_installer.py
 
 正式分发为 EXE 安装包，源码另提供 ZIP。构建机需要 Python/Rust、.NET SDK、Windows NativeAOT C++ 工具链和 Inno Setup；使用电脑不需要这些工具。不要只复制主程序 EXE，必须保留 `engine/NameFinder.Engine.exe` 及其依赖、教程和资源。源码调试可通过 `COD_NAME_FINDER_ENGINE` 指定已打包后端。
 
-2.2.1 本地版历史验证包括 **524 项 pytest 测试、15 项 Core 自检、NativeAOT 前端协议测试及安装器验收**；2.2.2 公开版的最终验证范围见[发布说明](docs/release-2.2.2.zh-CN.md)。MW7 Beta 的 BAT 启动与真实捕获已通过；BO7 现场捕获仍未通过；CDB 已独立回读验证，Saluki GUI 的现场加载尚未验证。测试通过不保证有限候选空间能够还原每个名称，也不代表整个游戏已捕获。
+2.3.0 已通过741项Python测试，注册表生成一致性和变更格式检查通过。最终EXE安装验收、NativeAOT自检及其他逐项结果集中在同版本发行附件[CODNameFinder-2.3.0-validation.json](https://github.com/ez4cywa/cod-name-finder/releases/download/v2.3.0/CODNameFinder-2.3.0-validation.json)，范围见[本版发布说明](docs/release-2.3.0.zh-CN.md)。历史2.2.1本地版包含524项pytest和15项Core检查，2.2.2公开版记录保存在[历史发布说明](docs/release-2.2.2.zh-CN.md)，不代替本版验收。MW7 Beta的真实BAT启动与捕获属于2026-10-05的现场记录；BO7现场捕获、Saluki GUI现场加载尚未通过对应验收。测试通过不保证有限候选空间能够还原每个名称，也不代表整个游戏已捕获。
 
 实现、作品域与表级证据详见[哈希算法覆盖](docs/hash-algorithm-coverage.md)；GPL 上游代码未直接复制，采用独立数学实现。软件不会捆绑游戏媒体、用户研究数据库或未经许可的社区整表。
 

@@ -11,7 +11,7 @@ import zipfile
 from build_installer import build_installer
 
 ROOT=Path(__file__).resolve().parents[1]
-VERSION='2.2.2'
+VERSION='2.3.0'
 
 def run(*args,cwd=ROOT):subprocess.run(args,cwd=cwd,check=True)
 
@@ -57,15 +57,18 @@ def main(skip_tests=False):
     # PyInstaller's executable module archive alone does not expose those files.
     provenance=folder/'engine/_internal/finder';provenance.mkdir(parents=True,exist_ok=True)
     for name in ('autoplans.py','crossassets.py','weapon.py','store.py','candidates.py','completedcache.py',
+                 'soundplans.py','soundbyte.py','spellings.py','typedplans.py','community.py',
+                 'scanidentity.py','backends.py','peeling.py','registry.py','formats.py','generated_registry.py',
                  'hashing.py','pipeline.py','engine.py','asset_names.py','methods.py','snapshot.py','cordycep.py','batch_loader.py','cordycep_profiles.json'):
         shutil.copy2(ROOT/'finder'/name,provenance/name)
     assert not any('pyside' in p.name.lower() or 'qt6' in p.name.lower() for p in (folder/'engine').rglob('*'))
-    for name in ('README.md','LICENSE','THIRD_PARTY_NOTICES.md'):shutil.copy2(ROOT/name,folder/name)
+    for name in ('README.md','CONTRIBUTING.md','LICENSE','THIRD_PARTY_NOTICES.md'):shutil.copy2(ROOT/name,folder/name)
     (folder/'docs').mkdir()
     shutil.copy2(ROOT/'docs/user-guide.zh-CN.md',folder/'docs/user-guide.zh-CN.md')
+    shutil.copytree(ROOT/'docs/images',folder/'docs/images')
     glass_research=ROOT/'docs/liquid-glass-research.zh-CN.md'
     if glass_research.is_file():shutil.copy2(glass_research,folder/'docs'/glass_research.name)
-    for name in ('hash-registry.json','hash-algorithm-coverage.md','hash-slinging-slasher-adaptation.zh-CN.md','adaptation-implementation.zh-CN.md','capture-feasibility.zh-CN.md','cordycep-local-research.zh-CN.md','cordycep-latest-research.zh-CN.md'):
+    for name in ('hash-registry.json','hash-algorithm-coverage.md','hash-slinging-slasher-adaptation.zh-CN.md','adaptation-implementation.zh-CN.md','capture-feasibility.zh-CN.md','cordycep-local-research.zh-CN.md','cordycep-latest-research.zh-CN.md','building.zh-CN.md','release-2.2.2.zh-CN.md','upstream-update-20261009.zh-CN.md','release-2.3.0.zh-CN.md'):
         source_document=ROOT/'docs'/name
         if source_document.is_file():shutil.copy2(source_document,folder/'docs'/name)
     shutil.copytree(ROOT/'examples/one-click',folder/'examples/one-click')
@@ -83,7 +86,13 @@ def main(skip_tests=False):
         snapshot='CODSNAP2-raw64-per-pool-domain',offline_snapshot=True,
         supported_capture_pools=16,cordycep_bundled=False,
         search='bounded-forward-or-reversible-peeling',sweep_ledger='content-addressed-intervals-and-complete-runs',
-        community_sync='optional-read-only-default-off')
+        community_sync='optional-read-only-default-off',
+        upstream_reference='dbe25197cee05b8315b4effff1841ed4868152f0',
+        modern_ids='capture-local-type-map-63-bit; full64-alias-output-refused',
+        observed_search=['sound-linked-namespaces','alias-file-families','inverse-sound-final-byte',
+                         'animation-to-alias','typed-weapon-image-material'],
+        source_spellings='bounded-restoration-and-source-domain-rehash',
+        scan_cache_identity='source-and-actual-native-dll-sha256')
     (folder/'architecture.json').write_text(json.dumps(architecture,indent=2),encoding='utf-8')
     licenses=folder/'licenses';licenses.mkdir()
     python_license=Path(sys.base_prefix)/'LICENSE.txt'

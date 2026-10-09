@@ -1,6 +1,6 @@
 # Windows 开发与构建指南
 
-本页面向开发者。普通用户下载 [2.2.2 安装包](https://github.com/ez4cywa/cod-name-finder/releases/download/v2.2.2/CODNameFinder-2.2.2-Setup.exe) 后可直接使用，无需安装本页的编译工具；操作步骤见[使用教程](user-guide.zh-CN.md)。构建目标为 Windows 11 x64，界面使用 Avalonia NativeAOT，文件处理由随包的 Python worker 完成，匹配引擎使用 Rust CPU 和可选 OpenCL GPU。
+本页面向开发者，当前目标版本2.3.0，最终验证报告随发行附件提供。普通用户下载 [2.3.0 安装包](https://github.com/ez4cywa/cod-name-finder/releases/download/v2.3.0/CODNameFinder-2.3.0-Setup.exe) 后即可使用，无需安装本页的编译工具；操作步骤见[使用教程](user-guide.zh-CN.md)。构建目标为 Windows 11 x64，界面使用 Avalonia NativeAOT，文件处理由随包的 Python worker 完成，匹配引擎使用 Rust CPU 和可选 OpenCL GPU。
 
 ## 构建依赖
 
@@ -53,7 +53,7 @@ Pop-Location
 Python 后端可通过 `python -m finder --help` 查看命令。正式一键计算配置实例和各命令参数见[教程中的命令行部分](user-guide.zh-CN.md#安装版命令行无需-python-或-git)。源码调试的 GUI 通过 `COD_NAME_FINDER_ENGINE` 指向一个已经打包的 worker，例如：
 
 ```powershell
-$env:COD_NAME_FINDER_ENGINE = (Resolve-Path .\dist\2.2.2\CODNameFinder\engine\NameFinder.Engine.exe).Path
+$env:COD_NAME_FINDER_ENGINE = (Resolve-Path .\dist\2.3.0\CODNameFinder\engine\NameFinder.Engine.exe).Path
 Push-Location dotnet
 dotnet run --project CODNameFinder.App/CODNameFinder.App.csproj -c Release --no-build
 Pop-Location
@@ -63,7 +63,7 @@ Pop-Location
 
 ## 生成 EXE 安装包
 
-先关闭正在运行的构建输出，确认没有进程占用 `dist/2.2.2/CODNameFinder`。如果 Inno Setup 不在常见位置，设置：
+先关闭正在运行的构建输出，确认没有进程占用 `dist/2.3.0/CODNameFinder`。如果 Inno Setup 不在常见位置，设置：
 
 ```powershell
 $env:INNO_ISCC = 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe'
@@ -74,9 +74,9 @@ python scripts/build_release.py
 
 | 路径 | 内容 |
 | --- | --- |
-| `dist/2.2.2/CODNameFinder/` | 完整安装负载：主程序、`engine`、教程、示例、资源及许可。 |
-| `releases/CODNameFinder-2.2.2-Setup.exe` | Windows EXE 安装包。 |
-| `releases/CODNameFinder-2.2.2-source.zip` | 当前脚本生成的源码归档。 |
+| `dist/2.3.0/CODNameFinder/` | 完整安装负载：主程序、`engine`、教程、示例、资源及许可。 |
+| `releases/CODNameFinder-2.3.0-Setup.exe` | Windows EXE 安装包。 |
+| `releases/CODNameFinder-2.3.0-source.zip` | 当前脚本生成的源码归档。 |
 | `releases/SHA256SUMS.txt` | 安装包和源码归档校验值。 |
 | `releases/release.json` | 构建清单；其 `publication` 记录本地构建，不代替 GitHub 发布状态。 |
 
@@ -87,14 +87,33 @@ python scripts/build_release.py
 完成构建后运行：
 
 ```powershell
-.\dist\2.2.2\CODNameFinder\CODNameFinder.exe selftest
-pwsh -File scripts/validate-capture-frontend.ps1 -App .\dist\2.2.2\CODNameFinder\CODNameFinder.exe
+.\dist\2.3.0\CODNameFinder\CODNameFinder.exe selftest
+pwsh -File scripts/validate-capture-frontend.ps1 -App .\dist\2.3.0\CODNameFinder\CODNameFinder.exe
 python scripts/validate_installer.py
 ```
 
 第一项应输出 15 项 Core 检查及 `native_aot: true`。第二项使用合成桥接后端验证 BAT 选择、参数传递、捕获完成和停止行为，不启动真实游戏加载器。第三项以独立验证 AppId 安装到临时目录，在 System32-only PATH 和缺失系统 .NET 运行时的环境验证内置 worker、CPU/GPU、示例、快照、CDB 增量、教程、界面与卸载。验收日志写入本地 `validation`，不属于公开数据。
 
-2.2.1 本地版的历史记录为 524 项 pytest、15 项 Core 检查及安装器验收通过；2.2.2 公开版的最终验证范围见[发布说明](release-2.2.2.zh-CN.md)。MW7 Beta 的真实 BAT 启动与捕获已通过，BO7 的现场捕获尚未通过，Saluki GUI 的现场加载尚未验证。改变加载器、配置、游戏模块或显卡驱动后，必须重新验证相应行为，不能沿用原机器的现场结论。
+2.3.0源码回归通过741项pytest，注册表`--check`及变更格式检查通过。最终EXE安装验收、NativeAOT自检和逐项状态以[CODNameFinder-2.3.0-validation.json发行附件](https://github.com/ez4cywa/cod-name-finder/releases/download/v2.3.0/CODNameFinder-2.3.0-validation.json)为准，范围见[本版发布说明](release-2.3.0.zh-CN.md)。2.2.1 本地版的524项pytest、15项Core检查及2.2.2的[历史公开验收](release-2.2.2.zh-CN.md)继续保留，不能代替新版本验收。MW7 Beta 的真实 BAT 启动与捕获属于2026-10-05的现场记录，BO7 的现场捕获尚未通过，Saluki GUI 的现场加载尚未验证。改变加载器、配置、游戏模块或显卡驱动后，必须重新验证相应行为，不能沿用原机器的现场结论。
+
+## 修改2.3.0关联推测规则
+
+本次上游核对固定在 `dbe25197cee05b8315b4effff1841ed4868152f0`；PR、独立实现和实际输入验证详见[更新记录](upstream-update-20261009.zh-CN.md)。开发修改应保持以下接口与约束：
+
+| 代码 | 职责与约束 |
+|---|---|
+| `finder/snapshot.py` | 现代CODIDS v1强制同名池清单，以type名识别捕获池，核对game／count／sort；不得将63位alias提升为满64位目标 |
+| `finder/spellings.py` | `resolve_table_spelling()` 只接受通过原source-table完整键验证的有限恢复拼写，不创建证据或排除键 |
+| `finder/soundplans.py` | `build_sound_plans()` 生成重复namespace、alias缺失文件族候选；target模板来自同类型完整键，donor不改变target存在性；双方可用时为namespace预留至多四分之一额度，余量按游标返还 |
+| `finder/soundbyte.py` | `build_final_byte_plans()` 返回plans与准备报告；FNV63／64模环内反求最后ASCII字节；先合并profile归一化等价前缀，字节运算与桶探测同受准备上限约束 |
+| `finder/typedplans.py` | `build_typed_plans(source_names_by_kind, target_names_by_kind, target_kinds)` 保持动画／alias、整词武器身份／图片／材质的类型关系；武器身份来自已核验动画、图片、材质或alias，不直接假设weapon类型输入 |
+| `finder/pipeline.py` | 统一估算和执行准备，按类型、profile和当前目标键确认目标模板；新规则受`cross_asset`控制 |
+| `finder/methods.py`、`finder/completedcache.py` | 新生成器及其依赖源码进入方法身份和完整缓存指纹；改变规则后旧缓存不能绕过新代码 |
+| `scripts/build_release.py` | worker内保留计算生成器和校验源码资源，教程与本版说明随完整EXE安装负载提供 |
+
+源音频表的恢复拼写只能证明供体种子在原表规则下成立，不能代替当前目标的独立匹配。无键TXT或文件名可作候选，只有在当前同类型目标完整键上回算通过后，才能进入目标惯例学习。命中后仍走冲突剔除、Saluki完整键／原样名称排除和CDB回读。
+
+新增生成器测试应包含输入中没有的新名称、wrong kind／wrong profile拒绝、borrowed或unkeyed线索隔离、反斜杠与编码尾、绑定take元组、有限预算、取消及缓存源码变化。上游公开快照只读检查与合成单元测试分别记录；公开9,513,578条记录的导入成功不等于跑完该空间的名称计算。不要将上游吞吐或历史本机速度填作本版新算法实测。
 
 ## 数据与许可
 

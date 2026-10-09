@@ -14,10 +14,12 @@ import time
 import uuid
 
 from .hashing import PROFILES, Profile, parse_hash
+from .scanidentity import scan_signature
 
 FINGERPRINT_VERSION = 1
 METHOD_VERSION = '1'
 _SOURCE_MODULES = {
+    'sound-observed': 'soundplans.py', 'sound-final-byte': 'soundbyte.py', 'typed-observed': 'typedplans.py',
     'cross-asset': 'crossassets.py', 'local-observed': 'autoplans.py',
     'weapon': 'weapon.py', 'catalog': 'store.py', 'prior': 'store.py',
 }
@@ -63,6 +65,7 @@ def method_descriptor(metadata=None):
     rule = str(metadata.get('rule', generator))
     family = next((key for key in _SOURCE_MODULES if generator.startswith(key)), 'explicit')
     identifiers = {
+        'sound-observed': 'soundplans', 'sound-final-byte': 'soundbyte', 'typed-observed': 'typedplans',
         'cross-asset': 'crossassets', 'local-observed': 'autoplans',
         'catalog': 'catalog', 'prior': 'prior', 'weapon': 'weapon', 'explicit': 'plan',
     }
@@ -130,6 +133,7 @@ def plan_fingerprint(plan, *, profiles, targets, catalog_fingerprint='',
     descriptor = method or method_descriptor(getattr(plan,'metadata',None))
     return _digest({
         'fingerprint_version': FINGERPRINT_VERSION,
+        'scanner': scan_signature(),
         'normalized_plan': normalized,
         'targets_sha256': targets_fingerprint(targets),
         'catalog_fingerprint': catalog_fingerprint,

@@ -3,6 +3,7 @@ from dataclasses import dataclass,asdict
 from datetime import datetime,timezone,timedelta
 import hashlib
 import csv
+import itertools
 import json
 from pathlib import Path
 import re
@@ -11,7 +12,7 @@ import uuid
 
 from . import VERSION
 from .assets import ASSET_LABELS
-from .hashing import PROFILES
+from .hashing import PROFILES,batch_digest
 from .formats import decode_cdb,iter_dictionary
 from .store import Store
 from .engine import create_task,run_task
@@ -19,8 +20,14 @@ from .exporter import export,prepare_saluki,SALUKI_PACKAGES
 from .autoplans import build_plans
 from .asset_names import parse_exported_name,PREFIX_TYPES,GENERIC_PREFIXES
 from .crossassets import build_cross_asset_plans
+from .registry import table_rule,DOMAINS
+from .spellings import resolve_table_spelling
+from .soundplans import build_sound_plans
+from .soundbyte import build_final_byte_plans
+from .typedplans import build_typed_plans
 
-CROSS_ASSET_KINDS=frozenset(('xanim','sndasset','soundbank','soundbanktransient'))
+CROSS_ASSET_KINDS=frozenset(('xanim','sndasset','soundbank','soundbanktransient',
+                           'soundbankalias','image','material'))
 
 @dataclass
 class Config:
@@ -105,7 +112,69 @@ def _index_kind(path):
     if stem=='fnv1a_soundbanks':return 'soundbank'
     return None
 
-def corpus_from_indexes(directory,kinds,progress,control,related_names=None,target_names_by_kind=None,profile_id=None):
+def _verified_index_names(path,entries,control):
+    """Verify source keys in bounded native CPU batches; repair only mismatches.
+
+    These names are vocabulary, not target evidence. A target-held template
+    additionally needs the target's own profile and typed-pool membership.
+    """
+    rule=table_rule(path)
+    if not rule or not rule.get('profile'):return set()
+    profiles=[PROFILES[pid] for pid in (rule['profile'],*rule.get('alternate_profiles',[]))]
+    iterator=iter(entries.items());verified=set()
+    while batch:=list(itertools.islice(iterator,4096)):
+        if control()!='run':return verified
+        pending=[(key,name) for key,name in batch if name and not any(c in name for c in '\x00\r\n') and len(name.encode('utf-8'))<=1024]
+        for profile in profiles:
+            if not pending:break
+            hashes=batch_digest([name for _,name in pending],profile)
+            verified.update(name for (key,name),digest in zip(pending,hashes) if key==int(digest))
+            pending=[row for row,digest in zip(pending,hashes) if row[0]!=int(digest)]
+        if rule['kind']=='sndasset' or (rule['profile']=='fnv1a63' and not path.stem.endswith('_v2')):
+            for key,name in pending:
+                if control()!='run':return verified
+                restored=resolve_table_spelling(path,key,name)
+                if restored is not None:verified.add(restored)
+    return verified
+
+
+def _held_templates(store,profile,candidates_by_kind,untyped,control,game=''):
+    """Learn a convention only after a full-key hit in that actual target type."""
+    keys={}
+    for row in store.targets(exclude_material=False):keys.setdefault(row['kind'],set()).add(int(row['hash'],16))
+    held={kind:set() for kind in keys}
+    for kind,wanted in keys.items():
+        if kind not in CROSS_ASSET_KINDS:continue
+        if game in DOMAINS and not any(row['status']=='evidence' and row['profile']==profile.id
+            and kind in row['kinds'] for row in DOMAINS[game]):continue
+        iterator=iter(candidates_by_kind.get(kind,set()) | untyped)
+        while names:=list(itertools.islice(iterator,4096)):
+            if control()!='run':return held
+            hashes=batch_digest(names,profile)
+            for name,digest in zip(names,hashes):
+                if int(digest) in wanted and profile.digest(name)==int(digest):held[kind].add(name)
+    return held
+
+
+def _alias_clues(store,names,control):
+    """Masked legacy aliases can teach hypotheses, never full-width evidence."""
+    groups={}
+    for row in store.db.execute("SELECT raw_hash,profile,stored_mask FROM snapshot_records WHERE kind='soundbankalias'"):
+        pid=row['profile']
+        if not pid and store.meta('build') in ('BO4','BOCW'):pid='fnv1a63'
+        if pid not in ('fnv1a63','fnv1a64'):continue
+        groups.setdefault((pid,int(row['stored_mask'],16)),set()).add(int(row['raw_hash'],16))
+    found=set()
+    for (pid,mask),keys in groups.items():
+        profile=PROFILES[pid]
+        for index,name in enumerate(sorted(names)):
+            if index%1024==0 and control()!='run':return found
+            if (profile.digest(name)&mask) in keys:found.add(name)
+    return found
+
+
+def corpus_from_indexes(directory,kinds,progress,control,related_names=None,target_names_by_kind=None,profile_id=None,
+                        verified_names_by_kind=None):
     names=set();sources=[]
     markers={Path('fnv1a_strings.cdb' if kind=='bone' and profile_id=='fnv1a60' else
                   SALUKI_PACKAGES.get(kind,'fnv1a_strings.cdb')).stem.replace('_v2','') for kind in kinds}
@@ -121,6 +190,12 @@ def corpus_from_indexes(directory,kinds,progress,control,related_names=None,targ
         try:entries=decode_cdb(blob)
         except Exception as e:raise ValueError(f'名称索引无法读取：{path.name}: {e}') from e
         values={n for n in entries.values() if n and not any(c in n for c in '\x00\r\n') and len(n.encode('utf-8'))<=1024}
+        if verified_names_by_kind is not None:
+            rule=table_rule(path)
+            if rule and rule['kind'] in CROSS_ASSET_KINDS:
+                verified=_verified_index_names(path,entries,control)
+                verified_names_by_kind.setdefault(rule['kind'],set()).update(verified)
+                if path in selected_paths:values.update(verified)
         if path in selected_paths:names.update(values)
         if related_names is not None:related_names.update(values)
         if target_names_by_kind is not None:
@@ -235,9 +310,10 @@ def prepare(config,store,progress=lambda *_:None,control=lambda:'run',snapshot=N
     imported=snapshot['imported'];chosen=snapshot['chosen'];kinds=snapshot['kinds'];domain=snapshot['domain']
     targets=store.targets(exclude_material=config.exclude_material)
     cross_enabled=config.cross_asset and bool(CROSS_ASSET_KINDS.intersection(kinds))
-    related_names=set();target_names_by_kind={}
+    related_names=set();target_names_by_kind={};verified_names_by_kind={}
     names,sources,loaded=corpus_from_indexes(config.indexes,kinds,progress,control,
-        related_names if cross_enabled else None,target_names_by_kind if cross_enabled else None,profile_id=config.profile)
+        related_names if cross_enabled else None,target_names_by_kind if cross_enabled else None,profile_id=config.profile,
+        verified_names_by_kind=verified_names_by_kind if cross_enabled and not config.low60 else None)
     extras,extra_sources=additional_names(config.dictionary,progress,control)
     readable=readable_names(config.folder,config.profile) if config.input_mode=='folder' else set()
     if config.input_mode=='snapshot':
@@ -300,9 +376,32 @@ def prepare(config,store,progress=lambda *_:None,control=lambda:'run',snapshot=N
         # naming templates from unverified cross-title donor conventions.
         plans.extend(('跨作品候选 · '+label,plan) for label,plan in borrowed_plans)
     cross_plans=build_cross_asset_plans(related_names,target_names_by_kind,kinds,number_max=config.number_max) if cross_enabled else []
+    if cross_enabled and not config.low60 and control()=='run':
+        profile=PROFILES[config.profile]
+        held=_held_templates(store,profile,verified_names_by_kind,extras|readable,control,config.game)
+        for kind,values in held.items():verified_names_by_kind.setdefault(kind,set()).update(values)
+        observed_plans=build_typed_plans(verified_names_by_kind,held,kinds,control=control)
+        byte_report={'enabled':False};aliases=set()
+        if 'sndasset' in kinds:
+            aliases=_alias_clues(store,verified_names_by_kind.get('soundbankalias',set())|extras,control)
+            aliases.update(held.get('soundbankalias',set()) if config.profile in ('fnv1a63','fnv1a64') else set())
+            sound_donors=verified_names_by_kind.get('sndasset',set())
+            target_sounds=held.get('sndasset',set())
+            observed_plans.extend(build_sound_plans(sound_donors,target_sounds,aliases,control=control))
+            sound_keys={int(row['hash'],16) for row in targets if row['kind']=='sndasset'}
+            byte_plans,byte_report=build_final_byte_plans(sound_donors,target_sounds,sound_keys,profile,control=control)
+            observed_plans[0:0]=byte_plans
+        cross_summary['observed']={'source_verified_names':{kind:len(values) for kind,values in verified_names_by_kind.items()},
+            'target_held_names':{kind:len(values) for kind,values in held.items()},
+            'target_alias_clues':len(aliases),'alias_clue_policy':'capture-stored-width; candidate-only',
+            'plans':len(observed_plans),'candidates':sum(plan.total for _,plan in observed_plans),
+            'final_byte':byte_report}
+        # Target-measured methods precede broad cross-asset hypotheses.
+        cross_plans[0:0]=observed_plans
+    if control()!='run':loaded=False
     cross_summary.update({'plans':len(cross_plans),'candidates':sum(plan.total for _,plan in cross_plans)})
     if cross_plans:
-        limits=cross_plans[0][1].metadata
+        limits=next((plan.metadata for _,plan in cross_plans if 'unbounded_cross_combinations_upper_bound' in plan.metadata),{})
         cross_summary.update({key:limits[key] for key in ('bounded_search','unbounded_cross_combinations_upper_bound',
             'emitted_cross_combinations','omitted_cross_combinations_upper_bound') if key in limits})
         # Preserve the fast literal/title checks, then explore cross-asset
@@ -370,7 +469,9 @@ def run(config,progress=lambda *_:None,control=lambda:'run'):
                 complete=False;stop_reason='已停止' if control()!='run' else '本次预算耗尽';break
             progress(processed,f'阶段 {i+1}/{len(plans)}：{label} · {plan.total:,} 次候选计算')
             if not store.targets(exclude_material=config.exclude_material,unknown_only=True):break
-            task=create_task(store,plan,[config.profile],exclude_material=config.exclude_material,
+            plan_kinds=plan.metadata.get('target_kinds',[])
+            if not store.targets(kinds=plan_kinds,exclude_material=config.exclude_material,unknown_only=True):continue
+            task=create_task(store,plan,[config.profile],kinds=plan_kinds,exclude_material=config.exclude_material,
                 backend=config.backend,budget=remaining,seconds=max(1,seconds),threads=4,duty=75,
                 keyword=config.keyword,ledger_path=Path(config.output)/'.namefinder-ledger.sqlite',anyway=config.anyway,
                 details={'one_click':True,'stage':label,'index_sources':sources,'content_sources':sources+extra_sources,

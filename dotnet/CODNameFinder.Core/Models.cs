@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace CODNameFinder.Core;
 
-public static class AppVersion { public const string Version="2.2.2"; }
+public static class AppVersion { public const string Version="2.3.0"; }
 
 public sealed class Config
 {
@@ -60,7 +60,7 @@ public sealed class Config
         if(IsWithin(Output,sourceDirectory)||IsWithin(Output,Indexes))throw new ArgumentException("输出目录请选择资产、快照和名称索引文件夹以外的位置");
         if(!string.IsNullOrEmpty(Dictionary)&&!File.Exists(Dictionary)&&!System.IO.Directory.Exists(Dictionary))throw new ArgumentException("补充名称词典不存在");
         if(!string.IsNullOrEmpty(BorrowedDictionary)&&!File.Exists(BorrowedDictionary)&&!System.IO.Directory.Exists(BorrowedDictionary))throw new ArgumentException("跨作品候选词典不存在");
-        if(CrossAsset && (AssetType is "auto" or "xanim" or "sndasset" or "soundbank" or "soundbanktransient") && !string.IsNullOrEmpty(RelatedFolder))
+        if(CrossAsset && (AssetType is "auto" or "xanim" or "sndasset" or "soundbank" or "soundbanktransient" or "soundbankalias" or "image" or "material") && !string.IsNullOrEmpty(RelatedFolder))
         {
             if(!System.IO.Directory.Exists(RelatedFolder))throw new ArgumentException("其他已命名资产文件夹不存在");
             if(IsWithin(Output,RelatedFolder))throw new ArgumentException("输出目录请选择其他已命名资产文件夹以外的位置");

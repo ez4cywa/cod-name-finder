@@ -18,14 +18,18 @@ from .asset_names import parse_exported_name
 from .generated_registry import REGISTRY_SHA256
 from .hashing import PROFILES, parse_hash
 from .methods import canonical_json
+from .scanidentity import scan_signature
 
 
 SCHEMA_VERSION = 2
 _MAX_PAYLOAD = 256 * 1024 * 1024
 _DICTIONARY_SUFFIXES = frozenset(('.txt', '.tsv', '.csv', '.cdb', '.wni'))
-_IMPLEMENTATIONS = ('autoplans.py', 'crossassets.py', 'weapon.py',
+_IMPLEMENTATIONS = ('autoplans.py', 'crossassets.py', 'weapon.py', 'soundplans.py', 'soundbyte.py',
+                    'spellings.py', 'typedplans.py', 'community.py',
                     'candidates.py', 'completedcache.py', 'hashing.py',
                     'pipeline.py', 'engine.py', 'asset_names.py', 'methods.py','snapshot.py',
+                    'backends.py', 'peeling.py', 'registry.py', 'generated_registry.py',
+                    'formats.py', 'scanidentity.py', 'store.py',
                     'cordycep_profiles.json')
 _SEMANTIC_FIELDS = ('game', 'profile', 'asset_type', 'exclude_material', 'keyword',
                     'low60', 'number_max', 'cross_asset', 'hash_domain',
@@ -183,6 +187,7 @@ def signature(config, store, control=lambda: 'run'):
                 return None
             related = _names_signature(names)
         payload = {'schema_version': SCHEMA_VERSION, 'registry_sha256': REGISTRY_SHA256,
+            'scanner': scan_signature(),
             'profile': profile.json(), 'implementations': _implementation_hashes(control),
             'catalog_fingerprint': store.meta('catalog_fingerprint'),
             'snapshot':snapshot_rows,

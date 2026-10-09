@@ -50,7 +50,7 @@ public partial class MainWindow : Window
     private Grid? _snapshotRow;
     private readonly CheckBox _exclude = new() { Content = "排除材质", IsChecked = true };
     private readonly CheckBox _low60 = new() { Content = "文件名仅保留低60位（仅生成待核验候选）" };
-    private readonly CheckBox _crossAsset = new() { Content = "根据其他资产名称推测动画和声音", IsChecked = true };
+    private readonly CheckBox _crossAsset = new() { Content = "根据已知名称推测关联资产", IsChecked = true };
     private readonly CheckBox _community = new() { Content = "只读导入 cod-name-db 社群表（默认关闭）" };
     private readonly CheckBox _communityRefresh = new() { Content = "本次刷新社群缓存" };
     private readonly CheckBox _allowUnverified = new() { Content = "手动启用未证实域（需至少3对完整目标样本）" };
@@ -132,7 +132,7 @@ public partial class MainWindow : Window
         };
         _crossAsset.IsCheckedChanged += (_, _) => UpdateRelatedControls();
         _community.IsCheckedChanged += (_, _) => UpdateAdvancedControls();
-        ToolTip.SetTip(_crossAsset, "使用全部已有名称索引及可选已命名资产中的线索。推测名称仍需哈希命中并独立验证。");
+        ToolTip.SetTip(_crossAsset, "推测动画、声音、声音别名、图像和材质；新规则先回算来源并核对目标类型。所有推测名称仍需完整哈希命中及独立验证。");
         AutomationProperties.SetName(_relatedFolder, "其他已命名资产文件夹");
         AutomationProperties.SetName(_relatedPicker, "选择其他已命名资产文件夹");
         if (!Program.ValidationMode) LoadSettings();
@@ -331,7 +331,7 @@ public partial class MainWindow : Window
         var snapshot=Selected(_inputMode)=="snapshot";
         if(_folderRow is not null)_folderRow.IsEnabled=!snapshot;
         if(_snapshotRow is not null)_snapshotRow.IsEnabled=snapshot;
-        ToolTip.SetTip(_snapshotFile,"JSON 可保留资产类型及关联字符串；IDS 按所选资产类型解释。只使用完整捕获的增强快照。");
+        ToolTip.SetTip(_snapshotFile,"JSON 保留原始键与关联字符串；现代 IDS 必须带同名 .pools.txt，按其中资产类型识别。63 位别名只作线索，不能认证满 64 位输出。");
         AutomationProperties.SetName(_inputMode,"输入来源：文件夹或离线资产快照");
         AutomationProperties.SetName(_snapshotPicker,"选择 JSON 或 IDS 离线快照");
     }
@@ -368,7 +368,7 @@ public partial class MainWindow : Window
     }
     private void UpdateRelatedControls()
     {
-        var supported = Selected(_assetType) is "auto" or "xanim" or "sndasset" or "soundbank" or "soundbanktransient";
+        var supported = Selected(_assetType) is "auto" or "xanim" or "sndasset" or "soundbank" or "soundbanktransient" or "soundbankalias" or "image" or "material";
         _crossAsset.IsEnabled = supported;
         _relatedFolder.IsEnabled = _relatedPicker.IsEnabled = supported && _crossAsset.IsChecked == true;
         ToolTip.SetTip(_relatedFolder, supported ? "可选名称线索目录；勾选关联名称推测后启用。" : "仅动画、声音、声音库或自动识别目标使用关联推测；保留已选路径。");

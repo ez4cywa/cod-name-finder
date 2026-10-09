@@ -562,6 +562,12 @@ def main():
             cross_disabled = cross_asset_run('Disabled', False, {}, 1, 1)
             cross_filtered_expected = {key: name for key, name in cross_expected.items() if 'alpha57' in name}
             cross_filtered = cross_asset_run('Keyword', True, cross_filtered_expected, 2, 0, 'alpha57')
+            from validate_upstream_release import validate_upstream_features
+            upstream_runs_before = report['control_file_runs']
+            report['upstream_update_cases']=validate_upstream_features(base/'Upstream Update',execute_pipeline)
+            report['upstream_control_file_runs'] = report['control_file_runs'] - upstream_runs_before
+            assert report['upstream_control_file_runs'] == 2 * len(report['upstream_update_cases'])
+            report['upstream_update_standalone_verified']=True
             report.update({'cross_asset_inference_verified': True,
                 'cross_asset_index_model_clue_verified': True, 'cross_asset_related_folder_verified': True,
                 'cross_asset_disabled_baseline_verified': True, 'cross_asset_keyword_filter_verified': True,
@@ -784,7 +790,8 @@ def main():
             report['external_control_pause_saved_verified'] = True
             report['native_aot_facade_control_forwarding_verified'] = True
 
-            assert report['control_file_runs'] == len(report['runs']) == len(ASSET_LABELS)+10
+            assert len(report['runs']) == len(ASSET_LABELS)+10
+            assert report['control_file_runs'] == len(report['runs']) + report['upstream_control_file_runs']
             report['normal_runs_control_file_verified'] = True
 
             # Exercise the actual Avalonia start/progress/result chain as well

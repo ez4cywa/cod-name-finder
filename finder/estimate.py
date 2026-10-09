@@ -101,20 +101,24 @@ def estimate(config,progress=lambda *_:None,control=lambda:'run'):
             try:
                 for label,plan in plans:
                     if control()!='run':return {'status':'stopped','version':VERSION}
-                    cost=plan_cost(plan,profile,target_count)
+                    plan_kinds=plan.metadata.get('target_kinds',[])
+                    plan_targets={profile.id:sorted({row['hash'] for row in store.targets(
+                        kinds=plan_kinds,exclude_material=config.exclude_material,unknown_only=True)})}
+                    plan_target_count=len(plan_targets[profile.id])
+                    cost=plan_cost(plan,profile,plan_target_count)
                     if config.backend=='gpu':
                         cost={**cost,'strategy':'forward-gpu','estimated_forward_hashes':plan.total,
                               'estimated_byte_operations':cost['forward_byte_operations']}
                     cost.setdefault('estimated_byte_operations',cost['forward_byte_operations'])
                     descriptor=method_descriptor(plan.metadata)
-                    fingerprint=plan_fingerprint(plan,profiles=[profile],targets=targets,
+                    fingerprint=plan_fingerprint(plan,profiles=[profile],targets=plan_targets,
                         catalog_fingerprint=store.meta('catalog_fingerprint'),method=descriptor,
                         sources=state['sources']+state['extra_sources'],
-                        options={'keyword':config.keyword,'low60':config.low60,'kinds':[],
+                        options={'keyword':config.keyword,'low60':config.low60,'kinds':plan_kinds,
                                  'exclude_material':config.exclude_material,'domain':config.hash_domain})
-                    uncovered=ledger.remaining(fingerprint,profile.id+':',0,plan.total) if ledger else [(0,plan.total)]
+                    uncovered=ledger.remaining(fingerprint,profile.id+':'+','.join(sorted(plan_kinds)),0,plan.total) if ledger else [(0,plan.total)]
                     fresh=sum(end-begin for begin,end in uncovered)
-                    budget_work=budgeted_cost(cost,uncovered,max(0,config.budget-remaining)) if target_count else {
+                    budget_work=budgeted_cost(cost,uncovered,max(0,config.budget-remaining)) if plan_target_count else {
                         'budgeted_candidates':0,'fixed_byte_operations':0,'scan_byte_operations':0,
                         'byte_operations':0,'nominal_chunks':0}
                     active=budget_work['budgeted_candidates'];remaining+=active

@@ -1,7 +1,8 @@
 """Independent, strict readers for CODIDS v1 and native CODSNAP2 snapshots.
 
-Only BO4/BOCW's documented legacy pool numbers are classified automatically.
-Legacy uint64 fields have already lost bit 63; their width is never promoted.
+BO4/BOCW use documented legacy pool numbers. Modern CODIDS files require their
+capture-local pool labels: merged indexes are never live-loader pool indexes.
+CODIDS uint64 fields have already lost bit 63; their width is never promoted.
 New manifests carry explicit pool domains and retain the original uint64 key.
 """
 from collections import Counter
@@ -35,7 +36,17 @@ LEGACY_POOLS={
          69:'scriptfile',75:'keyvaluepairs',87:'scriptbundle',221:'soundbankalias'},
 }
 GAME_ALIASES={'BLKOPS04':'BO4','BLKOPSCW':'BOCW','T8':'BO4','T9':'BOCW',
+              'MODWAR22':'MWII','YAMYAMOK':'MWIII','BLACKOP6':'BO6',
               'MODWAR7':'COD2026','MW7BETA':'COD2026','BLACKOP7':'BO7'}
+MODERN_GAMES=frozenset(('MWII','MWIII','BO6','BO7','COD2026'))
+MODERN_SOURCE='hash-slinging-slasher capture-local labels @dbe25197cee05b8315b4effff1841ed4868152f0'
+# A name is a pool-type fact, not permission to reinterpret a nested symbol.
+# In particular bone, scriptfield, dvar and omnvar are not ordinary asset pools.
+MODERN_POOL_KINDS={kind:kind for kind in (
+    'xmodel','xanim','material','image','sndasset','soundbank',
+    'soundbanktransient','animpkg','rawfile','scriptfile','scriptbundle',
+    'stringtable','localize','weapon','attachment','structuredtable','keyvaluepairs')}
+MODERN_POOL_KINDS.update(sound_asset='sndasset',sound_alias='soundbankalias')
 
 
 class _Cancelled(Exception):pass
@@ -101,13 +112,19 @@ def _file_metadata(root,item,label,control):
     return path,digest
 
 
-def _pool_sidecar(path,control):
-    entries={};declared_total=None
+def _pool_sidecar(path,control,*,expected_game=None):
+    entries={};declared_total=None;declared_filled=None;labels=set()
     for line in path.read_text(encoding='utf-8-sig').splitlines():
         _check(control);text=line.strip()
         if not text:continue
         total=re.search(r'--\s*(\d+)\s+assets\s+in\s+(\d+)\s+filled\s+pools',text,re.I)
-        if total:declared_total=int(total[1]);continue
+        if total:
+            if expected_game is not None:
+                if declared_total is not None:raise ValueError('池清单出现重复总计')
+                tag=text[:total.start()].strip()
+                if normalize_game(tag)!=expected_game:raise ValueError('池清单所属作品与快照不一致')
+                declared_filled=int(total[2])
+            declared_total=int(total[1]);continue
         if re.match(r'^(?:index|pool(?:_index)?)[,\s]',text,re.I):continue
         if ',' in text:
             columns=next(csv.reader([text]))
@@ -121,10 +138,14 @@ def _pool_sidecar(path,control):
         pool=_integer(int(pool),65535,'池号');count=_integer(int(count),MAX_RECORDS,'池计数')
         if pool in entries:raise ValueError('池清单出现重复池号')
         if not label or any(c in label for c in '\x00\r\n'):raise ValueError('池清单标签无效')
+        if expected_game is not None and label in labels:raise ValueError('池清单出现重复类型标签')
+        labels.add(label)
         entries[pool]={'label':label,'count':count}
     if not entries:raise ValueError('池清单没有有效条目')
     if declared_total is not None and sum(item['count'] for item in entries.values())!=declared_total:
         raise ValueError('池清单总计数不一致')
+    if declared_filled is not None and sum(item['count']>0 for item in entries.values())!=declared_filled:
+        raise ValueError('池清单非空池数量不一致')
     return entries
 
 
@@ -186,22 +207,40 @@ def _read_v1(path,control,pools_file):
                 records.append(record);previous=record
     sources=[{'file':str(path),'sha256':_sha(path,control),'role':'snapshot','logical_name':path.name}]
     sidecar=Path(pools_file).resolve(strict=True) if pools_file else path.with_suffix('.pools.txt')
-    entries=_pool_sidecar(sidecar,control) if sidecar.is_file() else {}
+    modern=game in MODERN_GAMES
+    if modern and not sidecar.is_file():
+        raise ValueError('现代CODIDS快照必须附带同名.pools.txt池清单，不能借用实时加载器池号')
+    entries=_pool_sidecar(sidecar,control,expected_game=game if modern else None) if sidecar.is_file() else {}
     if entries:sources.append({'file':str(sidecar),'sha256':_sha(sidecar,control),'role':'snapshot-pools','logical_name':sidecar.name})
     counts=Counter(pool for _,pool in records)
     if entries and (set(counts)-set(entries) or any(item['count']!=counts.get(pool,0) for pool,item in entries.items())):
         raise ValueError('CODIDS记录与池清单计数不一致')
-    pools={};warnings=[]
+    pools={};warnings=[];mapped_kinds=set()
     for pool in sorted(set(counts)|set(entries)):
-        kind=LEGACY_POOLS.get(game,{}).get(pool)
-        profile='fnv1a63' if kind and _evidence_profile(game,kind,'fnv1a63') else None
+        label=entries.get(pool,{}).get('label','')
+        kind=MODERN_POOL_KINDS.get(label) if modern else LEGACY_POOLS.get(game,{}).get(pool)
+        if modern:
+            profile='fnv1a64' if kind=='soundbankalias' else 'iw-resource63' if kind and kind!='xmodel' else None
+            if profile and not _evidence_profile(game,kind,profile):profile=None
+            if kind:
+                if kind in mapped_kinds:raise ValueError('池清单出现同一资产类型的重复映射')
+                mapped_kinds.add(kind)
+        else:
+            profile='fnv1a63' if kind and _evidence_profile(game,kind,'fnv1a63') else None
         pools[pool]={'kind':kind,'profile':profile,'key_width':63,'stored_mask':f'{MASK63:016x}',
-            'count':counts.get(pool,0),'stable':True,'errors':[],'mapping_source':LEGACY_SOURCE if kind else '',
-            'label':entries.get(pool,{}).get('label','')}
+            'count':counts.get(pool,0),'stable':True,'errors':[],
+            'mapping_source':(MODERN_SOURCE if modern else LEGACY_SOURCE) if kind else '',
+            'label':label}
         if kind is None:warnings.append(f'pool {pool} 没有已证分类，保留原始记录并排除计算')
-    return _finish({'format':'CODIDSv1','game':game,'game_id':game_id,'build':'legacy-unversioned',
+        elif modern and kind=='soundbankalias':
+            warnings.append(f'pool {pool} 声音别名仅保留63位；完整64位名称域不能正式计算或导出，请重新捕获原始64位键')
+        elif modern and profile is None and kind!='xmodel':
+            warnings.append(f'pool {pool} 的 {kind} 没有对应作品已证名称域，保留原始记录并排除计算')
+    return _finish({'format':'CODIDSv1','game':game,'game_id':game_id,
+        'build':'upstream-capture-unversioned' if modern else 'legacy-unversioned',
         'key_width':63,'records':records,'pools':pools,'complete':True,
-        'complete_scope':'legacy loaded set; whole-game completeness unproven',
+        'complete_scope':('capture-local declared loaded set; whole-game completeness unproven' if modern else
+                          'legacy loaded set; whole-game completeness unproven'),
         'source_files':sources,'strings_path':'','warnings':warnings},control)
 
 
