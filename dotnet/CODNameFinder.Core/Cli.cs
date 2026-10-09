@@ -8,11 +8,29 @@ public static class Cli
 {
     public static int? Dispatch(string[] args)
     {
-        if(args.Length==0 || args[0] is not ("run" or "estimate" or "methods" or "table-audit" or "community" or "cordycep" or "devices" or "selftest"))return null;
+        if(args.Length==0 || args[0] is not ("run" or "estimate" or "methods" or "table-audit" or "community" or "cordycep" or "devices" or "selftest" or "upstream"))return null;
         Console.OutputEncoding=new UTF8Encoding(false);Console.InputEncoding=new UTF8Encoding(false);
         string? folder=null;string? configFile=null;string? snapshotFile=null;
         try
         {
+            if(args[0]=="upstream")
+            {
+                if(args.Length<2)throw new ArgumentException("用法：upstream <action> [--export <目录>] [--package <目录>] [--offline] --stdin");
+                string? export=null;string? package=null;bool stdin=false;bool offline=false;
+                for(var index=2;index<args.Length;index++)
+                {
+                    if(args[index]=="--stdin"){stdin=true;continue;}
+                    if(args[index]=="--offline"){offline=true;continue;}
+                    if(args[index] is not ("--export" or "--package")||index+1>=args.Length||args[index+1].StartsWith("--",StringComparison.Ordinal))
+                        throw new ArgumentException("上游贡献仅接受 --export、--package、--offline 和 --stdin；凭据须通过标准输入传入");
+                    if(args[index++]=="--export")export=args[index];else package=args[index];
+                }
+                if(!stdin&&!offline)throw new ArgumentException("上游贡献凭据须通过 --stdin JSON 传入");
+                var credentials=stdin?JsonSerializer.Deserialize(Console.In.ReadToEnd(),UpstreamJsonContext.Default.UpstreamCredentials)
+                    ??throw new ArgumentException("标准输入必须是凭据 JSON 对象"):new UpstreamCredentials();
+                UpstreamSubmission.ExecuteAsync(args[1],export,package,credentials,protocol:Console.WriteLine,offline:offline).GetAwaiter().GetResult();
+                return 0;
+            }
             if(args[0] is "estimate" or "methods" or "table-audit" or "community" or "cordycep" || args[0]=="run" && (args.Contains("--estimate")||args.Contains("--anyway")))
             {
                 string? temporaryConfig=null;

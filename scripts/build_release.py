@@ -11,7 +11,7 @@ import zipfile
 from build_installer import build_installer
 
 ROOT=Path(__file__).resolve().parents[1]
-VERSION='2.3.0'
+VERSION='2.4.0'
 
 def run(*args,cwd=ROOT):subprocess.run(args,cwd=cwd,check=True)
 
@@ -58,6 +58,7 @@ def main(skip_tests=False):
     provenance=folder/'engine/_internal/finder';provenance.mkdir(parents=True,exist_ok=True)
     for name in ('autoplans.py','crossassets.py','weapon.py','store.py','candidates.py','completedcache.py',
                  'soundplans.py','soundbyte.py','spellings.py','typedplans.py','community.py',
+                 'upstream.py','contribution_evidence.py','github_api.py','github_credentials.py',
                  'scanidentity.py','backends.py','peeling.py','registry.py','formats.py','generated_registry.py',
                  'hashing.py','pipeline.py','engine.py','asset_names.py','methods.py','snapshot.py','cordycep.py','batch_loader.py','cordycep_profiles.json'):
         shutil.copy2(ROOT/'finder'/name,provenance/name)
@@ -68,7 +69,7 @@ def main(skip_tests=False):
     shutil.copytree(ROOT/'docs/images',folder/'docs/images')
     glass_research=ROOT/'docs/liquid-glass-research.zh-CN.md'
     if glass_research.is_file():shutil.copy2(glass_research,folder/'docs'/glass_research.name)
-    for name in ('hash-registry.json','hash-algorithm-coverage.md','hash-slinging-slasher-adaptation.zh-CN.md','adaptation-implementation.zh-CN.md','capture-feasibility.zh-CN.md','cordycep-local-research.zh-CN.md','cordycep-latest-research.zh-CN.md','building.zh-CN.md','release-2.2.2.zh-CN.md','upstream-update-20261009.zh-CN.md','release-2.3.0.zh-CN.md'):
+    for name in ('hash-registry.json','hash-algorithm-coverage.md','hash-slinging-slasher-adaptation.zh-CN.md','adaptation-implementation.zh-CN.md','capture-feasibility.zh-CN.md','cordycep-local-research.zh-CN.md','cordycep-latest-research.zh-CN.md','building.zh-CN.md','release-2.2.2.zh-CN.md','upstream-update-20261009.zh-CN.md','release-2.3.0.zh-CN.md','release-2.4.0.zh-CN.md','upstream-contribution.zh-CN.md'):
         source_document=ROOT/'docs'/name
         if source_document.is_file():shutil.copy2(source_document,folder/'docs'/name)
     shutil.copytree(ROOT/'examples/one-click',folder/'examples/one-click')
@@ -92,7 +93,12 @@ def main(skip_tests=False):
         observed_search=['sound-linked-namespaces','alias-file-families','inverse-sound-final-byte',
                          'animation-to-alias','typed-weapon-image-material'],
         source_spellings='bounded-restoration-and-source-domain-rehash',
-        scan_cache_identity='source-and-actual-native-dll-sha256')
+        scan_cache_identity='source-and-actual-native-dll-sha256',
+        upstream_contribution='opt-in-verified-findings-github-rest-graphql-no-git',
+        upstream_credentials='windows-credential-manager-optional',
+        upstream_contribution_types=['xanim','image','material','sound_asset','sound_alias'],
+        upstream_automatic='session-only-default-off-completed-full-key-only',
+        interactive_control_content='horizontal-and-vertical-center')
     (folder/'architecture.json').write_text(json.dumps(architecture,indent=2),encoding='utf-8')
     licenses=folder/'licenses';licenses.mkdir()
     python_license=Path(sys.base_prefix)/'LICENSE.txt'

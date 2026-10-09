@@ -11,7 +11,7 @@ def _configure_stdio():
 def _dispatch(argv,context):
     parser=argparse.ArgumentParser(description='COD Name Finder 一键名称查找')
     parser.add_argument('--work',help=argparse.SUPPRESS)
-    sub=parser.add_subparsers(dest='command',metavar='{gui,run,estimate,cordycep,methods,table-audit,community,tutorial,devices}')
+    sub=parser.add_subparsers(dest='command',metavar='{gui,run,estimate,cordycep,methods,table-audit,community,upstream,tutorial,devices}')
     sub.add_parser('gui');sub.add_parser('tutorial');sub.add_parser('devices')
     run=sub.add_parser('run',help='读取一键配置并完成查找和增量导出');run.add_argument('config');run.add_argument('--control',help=argparse.SUPPRESS)
     run.add_argument('--estimate',action='store_true',help='只显示候选空间、碰撞期望与时间估计')
@@ -20,6 +20,11 @@ def _dispatch(argv,context):
     methods=sub.add_parser('methods',help='方法产率与耗尽报告');methods.add_argument('action',choices=['report']);methods.add_argument('output',help='运行输出根目录或账本文件')
     audit=sub.add_parser('table-audit',help='逐表回算鉴定哈希规则');audit.add_argument('folder');audit.add_argument('--profile',action='append');audit.add_argument('--filter');audit.add_argument('--sample-limit',type=int)
     community=sub.add_parser('community',help='显式只读同步或导入社区表');community.add_argument('action',choices=['sync','import']);community.add_argument('folder');community.add_argument('--refresh',action='store_true');community.add_argument('--profile');community.add_argument('--borrowed',action='store_true');community.add_argument('--output')
+    upstream=sub.add_parser('upstream',help='预览并按用户选择提交上游名称贡献 PR')
+    upstream.add_argument('action',choices=['auth-status','auth-save','auth-clear','prepare','submit'])
+    upstream.add_argument('--export');upstream.add_argument('--package')
+    upstream.add_argument('--offline',action='store_true',help='仅离线生成预览，不读取凭据或访问网络；只用于 prepare')
+    upstream.add_argument('--stdin',action='store_true',help='从标准输入读取凭据 JSON；Token 不放在参数中')
     loader=sub.add_parser('cordycep',help='只读捕获已加载的 Cordycep 或启动所选本地作品');loader.add_argument('action',choices=['status','capture','scripts'])
     loader.add_argument('--directory',required=True);loader.add_argument('--game',choices=['COD2026','BO7'],default='COD2026')
     loader.add_argument('--output');loader.add_argument('--pid',type=int);loader.add_argument('--launch',action='store_true');loader.add_argument('--script',help='运行所选目录根下的 BAT 文件');loader.add_argument('--load-all',action='store_true');loader.add_argument('--control',help=argparse.SUPPRESS)
@@ -33,6 +38,33 @@ def _dispatch(argv,context):
     if args.command=='devices':
         from .backends import devices
         print(json.dumps(devices(),ensure_ascii=False));return 0
+    if args.command=='upstream':
+        from .upstream import authentication,prepare,submit
+        if args.offline and args.action!='prepare':raise ValueError('--offline 仅适用于 prepare')
+        credentials={}
+        if args.stdin:
+            raw=sys.stdin.read(8193)
+            if len(raw)>8192:raise ValueError('GitHub 凭据输入过大')
+            credentials=json.loads(raw)
+            if not isinstance(credentials,dict) or set(credentials)-{'token','remember_token'}:
+                raise ValueError('GitHub 凭据须为允许字段组成的 JSON 对象')
+            if not isinstance(credentials.get('token',''),str) or not isinstance(credentials.get('remember_token',False),bool):
+                raise ValueError('GitHub 凭据字段类型无效')
+        token=credentials.get('token') or None
+        progress=lambda n,m:print(json.dumps({'event':'progress','processed':n,'message':m},ensure_ascii=False),flush=True)
+        if args.action.startswith('auth-'):
+            result=authentication(args.action,token)
+        else:
+            if not args.offline and credentials.get('remember_token') and token:authentication('auth-save',token)
+            if args.action=='prepare':
+                if not args.export:raise ValueError('请选择本次完整导出目录')
+                result=prepare(args.export,token=token,offline=args.offline,progress=progress)
+            else:
+                package=args.package
+                if not package and args.export:package=prepare(args.export,token=token,progress=progress)['package_dir']
+                if not package:raise ValueError('请先预览本次提交')
+                result=submit(package,token=token,progress=progress)
+        print(json.dumps(result,ensure_ascii=False),flush=True);return 0
     if args.command=='cordycep':
         from .cordycep import discover,capture,startup_scripts
         if args.action=='scripts':

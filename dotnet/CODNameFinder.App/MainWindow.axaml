@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="CODNameFinder.App.MainWindow"
         x:CompileBindings="True"
-        Title="COD Name Finder 2.3.0"
+        Title="COD Name Finder 2.4.0"
         Width="1060" Height="850"
         MinWidth="880" MinHeight="740"
         WindowStartupLocation="CenterScreen" />

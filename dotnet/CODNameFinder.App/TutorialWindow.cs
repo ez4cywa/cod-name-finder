@@ -53,7 +53,7 @@ public sealed class TutorialWindow : Window
             {
                 var code = new List<string>();
                 while (++index < lines.Length && !lines[index].StartsWith("```", StringComparison.Ordinal)) code.Add(lines[index]);
-                document.Children.Add(new TextBox { Text = string.Join(Environment.NewLine, code), IsReadOnly = true, AcceptsReturn = true, TextWrapping = TextWrapping.Wrap, FontFamily = new FontFamily("Consolas, Microsoft YaHei UI"), Padding = new Thickness(14, 10), Background = Brush.Parse("#A509172A"), BorderBrush = GlassTheme.Line, CornerRadius = new CornerRadius(12), Foreground = GlassTheme.Text });
+                document.Children.Add(new TextBox { Text = string.Join(Environment.NewLine, code), IsReadOnly = true, AcceptsReturn = true, TextAlignment = TextAlignment.Left, VerticalContentAlignment = VerticalAlignment.Top, TextWrapping = TextWrapping.Wrap, FontFamily = new FontFamily("Consolas, Microsoft YaHei UI"), Padding = new Thickness(14, 10), Background = Brush.Parse("#A509172A"), BorderBrush = GlassTheme.Line, CornerRadius = new CornerRadius(12), Foreground = GlassTheme.Text });
             }
             else if (line.StartsWith('|'))
             {

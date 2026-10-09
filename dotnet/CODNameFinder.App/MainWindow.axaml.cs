@@ -88,7 +88,7 @@ public partial class MainWindow : Window
     private long _progressEvents;
     public string ValidationStatusText => _status.Text ?? "";
     public bool EstimateAvailable => _estimate is not null && _estimate.Status is not ("stopped" or "cancelled");
-    private bool IsBusy => _worker is not null || _estimateWorker is not null || _captureWorker is not null;
+    private bool IsBusy => _worker is not null || _estimateWorker is not null || _captureWorker is not null || _upstreamBusy;
 
     public MainWindow()
     {
@@ -225,6 +225,7 @@ public partial class MainWindow : Window
         AdvancedRow("方法守卫", _anyway);
         AdvancedRow("末尾数字上限", _numberMax);
         _advanced.Content = extra; FormRow("更多选项", _advanced);
+        BuildUpstreamControls();
         var form = new Grid { RowDefinitions = new RowDefinitions("Auto,*"), RowSpacing = 10 };
         var formHeading = new Grid { ColumnDefinitions = new ColumnDefinitions("*,Auto") };
         var inputHeading = Body("输入与输出"); inputHeading.Classes.Add("section-title"); formHeading.Children.Add(inputHeading);
@@ -523,13 +524,14 @@ public partial class MainWindow : Window
     {
         _inputGrid.IsEnabled = false; _start.IsEnabled = false; _stop.IsEnabled = true; _openResult.IsEnabled = _openCsv.IsEnabled = false;
         _progress.Maximum = config.Budget; _progress.Value = 0; _progress.IsIndeterminate = estimating;
-        _result = null;_captureResult=null; _stopTriggered = false; _cancellation = new CancellationTokenSource();
+        _result = null;_captureResult=null; _stopTriggered = false; _cancellation = new CancellationTokenSource();ResetUpstreamResult(config.Low60);
     }
 
     private void FinishOperation()
     {
         _cancellation?.Dispose(); _cancellation = null; _inputGrid.IsEnabled = true; UpdateRelatedControls(); UpdateAdvancedControls();UpdateInputControls();UpdateCaptureControls();
         _progress.IsIndeterminate = false; _start.IsEnabled = true; _stop.IsEnabled = false;
+        UpdateUpstreamControls();
         if (_closeAfterSave) Close();
     }
 
@@ -707,12 +709,16 @@ public partial class MainWindow : Window
         finally
         {
             _worker = null; _estimateConfiguration = null; StartCaption("估算候选与耗时"); FinishOperation();
+            if(!_closeAfterSave&&UpstreamSubmission.ShouldAutoSubmit(_result,config.Low60,_upstreamAuto.IsChecked==true))
+                await PerformUpstreamAsync("prepare",automatic:true);
         }
     }
 
     public void StopAndSave()
     {
         if (!IsBusy) return;
+        if(_upstreamBusy)
+        {_upstreamCancellation?.Cancel();_stop.IsEnabled=false;_upstreamHint.Text="停止贡献操作，等待后台退出；计算结果已保留。";return;}
         _stopTriggered=true;_cancellation?.Cancel(); _stop.IsEnabled = false;
         _status.Text = _captureWorker is not null ? "停止捕获，等待保存不完整报告并安全退出…" : _estimateWorker is not null ? "停止估算，等待后台退出…" : "等待当前批次保存并导出已验证结果…";
     }
@@ -774,7 +780,7 @@ public partial class MainWindow : Window
         if (tutorial) OpenTutorial();
         await Task.Delay(450);
         Window visual = tutorial ? _tutorial! : this;
-        if (!tutorial && Program.ValidationMode && (Environment.GetCommandLineArgs().Contains("--advanced")||Environment.GetCommandLineArgs().Contains("--capture")))
+        if (!tutorial && Program.ValidationMode && (Environment.GetCommandLineArgs().Contains("--advanced")||Environment.GetCommandLineArgs().Contains("--capture")||Environment.GetCommandLineArgs().Contains("--upstream")))
         { _inputScroll.Offset = new Vector(0, _inputScroll.Extent.Height); await Task.Delay(150); }
         // Avalonia's immediate renderer can double-scale nested rounded panels
         // when a live 2x window is rendered to a 192-DPI offscreen bitmap. Keep
@@ -784,7 +790,7 @@ public partial class MainWindow : Window
         using var bitmap = new RenderTargetBitmap(size, new Vector(96, 96)); bitmap.Render(visual); bitmap.Save(path, PngBitmapEncoderOptions.Default);
         var state = new GuiCaptureState
         {
-            SinglePage = true, AlgorithmDropdown = _profile.Items.Count == HashProfiles.All.Count, AssetTypeDropdown = _assetType.Items.Count == AssetNames.Labels.Count + 1,
+            SinglePage = true, AlgorithmDropdown = _profile.Items.Count == HashProfiles.All.Count, AssetTypeDropdown = _assetType.Items.Count == AssetNames.Labels.Count + 1,UpstreamContribution=UpstreamState(),InteractiveControlsCentered=InteractiveControlsCentered(),ControlAlignmentIssues=ControlAlignmentIssues(),
             InputModeDropdown=_inputMode.Items.Count==2,InputMode=Selected(_inputMode),SnapshotFilePicker=true,CordycepCaptureControls=true,
             CordycepCaptureEnabled=_attachCapture.IsEnabled&&_launchCapture.IsEnabled,
             BatDropdown=true,SelectedScript=Selected(_cordycepScript),BatCount=_cordycepScript.Items.Count,
@@ -812,7 +818,7 @@ public partial class MainWindow : Window
     {
         var state = new GuiRunValidationState
         {
-            NativeAot = !RuntimeFeature.IsDynamicCodeSupported, ProgressEvents = _progressEvents,
+            NativeAot = !RuntimeFeature.IsDynamicCodeSupported, ProgressEvents = _progressEvents,UpstreamContribution=UpstreamState(),InteractiveControlsCentered=InteractiveControlsCentered(),ControlAlignmentIssues=ControlAlignmentIssues(),
             InputModeDropdown=_inputMode.Items.Count==2,InputMode=Selected(_inputMode),SnapshotFile=_snapshotFile.Text??"",
             SnapshotFilePicker=true,CordycepCaptureControls=true,CaptureComplete=_captureResult?.Complete??false,
             BatDropdown=true,SelectedScript=Selected(_cordycepScript),BatCount=_cordycepScript.Items.Count,
@@ -903,6 +909,9 @@ internal sealed class WindowSettings
 
 internal sealed class GuiCaptureState
 {
+    [JsonPropertyName("control_alignment_issues")] public string[] ControlAlignmentIssues {get;set;}=[];
+    [JsonPropertyName("interactive_controls_centered")] public bool InteractiveControlsCentered {get;set;}
+    [JsonPropertyName("upstream_contribution")] public GuiUpstreamState UpstreamContribution {get;set;}=new();
     [JsonPropertyName("compact_header")] public bool CompactHeader { get; set; }
     [JsonPropertyName("introduction_removed")] public bool IntroductionRemoved { get; set; }
     [JsonPropertyName("custom_titlebar")] public bool CustomTitlebar { get; set; }
@@ -948,6 +957,9 @@ internal sealed class GuiCaptureState
 
 internal sealed class GuiRunValidationState
 {
+    [JsonPropertyName("control_alignment_issues")] public string[] ControlAlignmentIssues {get;set;}=[];
+    [JsonPropertyName("interactive_controls_centered")] public bool InteractiveControlsCentered {get;set;}
+    [JsonPropertyName("upstream_contribution")] public GuiUpstreamState UpstreamContribution {get;set;}=new();
     [JsonPropertyName("compact_header")] public bool CompactHeader { get; set; }
     [JsonPropertyName("introduction_removed")] public bool IntroductionRemoved { get; set; }
     [JsonPropertyName("custom_titlebar")] public bool CustomTitlebar { get; set; }
@@ -1002,4 +1014,5 @@ internal sealed class GuiRunValidationState
 [JsonSerializable(typeof(GuiCaptureState))]
 [JsonSerializable(typeof(GuiRunValidationState))]
 [JsonSerializable(typeof(GlassRenderingState))]
+[JsonSerializable(typeof(GuiUpstreamState))]
 internal partial class AppJsonContext : JsonSerializerContext { }

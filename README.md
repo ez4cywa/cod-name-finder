@@ -1,16 +1,16 @@
 # COD Name Finder
 
-版本 2.3.0（最终验证报告随发行附件提供）。Windows 11 x64 资产名称计算工具：从导出的哈希文件夹或离线资产快照读取目标，用可信名称、作品模板和关联资产线索生成候选，完整键命中并独立回算后输出 Saluki CDB 与新增名称 CSV。模型可提供已经解析的名称线索，未知模型不作为目标。
+版本 2.4.0（最终验证报告随发行附件提供）。Windows 11 x64 资产名称计算工具：从导出的哈希文件夹或离线资产快照读取目标，用可信名称、作品模板和关联资产线索生成候选，完整键命中并独立回算后输出 Saluki CDB 与新增名称 CSV。模型可提供已经解析的名称线索，未知模型不作为目标。
 
-Windows 安装包：[CODNameFinder-2.3.0-Setup.exe](https://github.com/ez4cywa/cod-name-finder/releases/download/v2.3.0/CODNameFinder-2.3.0-Setup.exe)。[发布页](https://github.com/ez4cywa/cod-name-finder/releases/tag/v2.3.0)提供对应源码、SHA256和最终验证清单，实施与验收范围见[2.3.0 发布说明](docs/release-2.3.0.zh-CN.md)。历史 [2.2.2 发行版](https://github.com/ez4cywa/cod-name-finder/releases/tag/v2.2.2)保留。随包教程可在界面点击“使用教程 · F1”打开，也可在线阅读[完整使用教程](docs/user-guide.zh-CN.md)。
+Windows 安装包：[CODNameFinder-2.4.0-Setup.exe](https://github.com/ez4cywa/cod-name-finder/releases/download/v2.4.0/CODNameFinder-2.4.0-Setup.exe)。[发布页](https://github.com/ez4cywa/cod-name-finder/releases/tag/v2.4.0)提供对应源码、SHA256和最终验证清单，实施与验收范围见[2.4.0 发布说明](docs/release-2.4.0.zh-CN.md)。历史 [2.3.0](https://github.com/ez4cywa/cod-name-finder/releases/tag/v2.3.0)及[2.2.2](https://github.com/ez4cywa/cod-name-finder/releases/tag/v2.2.2)发行版保留。随包教程可在界面点击“使用教程 · F1”打开，也可在线阅读[完整使用教程](docs/user-guide.zh-CN.md)。
 
-界面采用 Avalonia、液态玻璃风格与 .NET NativeAOT；文件处理继续由随包提供的 Python 后端完成，Rust CPU 和 OpenCL GPU 负责匹配。新电脑使用文件夹或完整快照计算时，无需另装 Python、.NET、Rust、Git、Ghidra、游戏或 Cordycep。捕获新快照的电脑使用用户自己安装的兼容加载器和游戏文件。名称计算默认在本地运行，社区同步须由用户显式启用。
+界面采用 Avalonia、液态玻璃风格与 .NET NativeAOT；文件处理继续由随包提供的 Python 后端完成，Rust CPU 和 OpenCL GPU 负责匹配。新电脑使用文件夹或完整快照计算时，无需另装 Python、.NET、Rust、Git、Ghidra、游戏或 Cordycep。捕获新快照的电脑使用用户自己安装的兼容加载器和游戏文件。名称计算默认在本地运行，社区同步和上游投稿分别由用户选择启用；投稿无需 Git、gh 或研究项目 checkout。
 
 ![紧凑玻璃界面](docs/images/interface.png)
 
 ## 拿到工具先做什么
 
-1. 退出旧版，运行 `CODNameFinder-2.3.0-Setup.exe`，从开始菜单启动；保留完整安装目录。
+1. 退出旧版，运行 `CODNameFinder-2.4.0-Setup.exe`，从开始菜单启动；保留完整安装目录。
 2. 将实际 Saluki 的 `hash_pkg` 复制到本机独立数据目录。新电脑无需运行 Saluki，示例索引只能测试流程。
 3. 点击“使用教程 · F1”，先用 `examples/one-click` 的占位动画跑通一次。
 4. 选择“已导出的哈希文件夹”或“离线资产快照 · JSON / IDS”，填入目标目录或完整捕获目录中的 `snapshot.json`。选择作品、名称域、规则、资产类型、已有CDB索引与独立输出目录。动画或声音可保留关联名称推测。
@@ -18,6 +18,17 @@ Windows 安装包：[CODNameFinder-2.3.0-Setup.exe](https://github.com/ez4cywa/c
 6. 用“打开新增 CSV”查看结果。向 Saluki 安装名称时先备份，再使用 `saluki-ready/hash_pkg` 中保留旧条目的合并文件。
 
 完整离线教程在 [docs/user-guide.zh-CN.md](docs/user-guide.zh-CN.md)，主窗口和教程均支持 F1。小窗口可滚动输入区域，计算、停止和结果操作保留在下方。
+
+## 2.4.0 上游名称贡献
+
+本次计算完整完成后，展开“上游名称贡献 · Hash Slinging Slasher”，点击“预览提交”，再用“打开完整预览”检查全部拟公开名称及 about 方法摘要；登录后重新线上排重，再点击“创建上游 PR”。目标为 [hash-slinging-slasher](https://github.com/KingslayerKyle/hash-slinging-slasher)。无Token且无保存凭据时生成离线预览；历史或partial导出可用内置命令行手动准备，显式 `--offline` 不读取凭据、不访问网络。本会话自动提交默认关闭，显式开启后只处理完整完成、有新增项且非低60位的运行；投稿失败保留 CSV/CDB，不影响本地导出。
+
+- Token 输入被遮蔽，经标准输入送往内置后端，默认仅在内存使用。可勾选保存到 Windows 凭据管理器，并检查或删除已保存凭据；不写入参数、配置或日志。公开 fork/PR 的经典 PAT 使用 `public_repo` 权限，申请步骤见[贡献教程](docs/upstream-contribution.zh-CN.md#登录-github)。
+- 投稿前重新完整回算，核对同作品、同类型的线上资产快照，再检查社区表、全部已合并名称 TXT 和分页开放 PR。公开 blob 按 SHA 缓存复用，提交仍需要新鲜的线上元数据；检查失败不会跳过排重。
+- 首版支持 BO4、BOCW、MWII、MWIII、BO6、BO7、COD2026 的动画、图片、材质、声音文件和声音别名，仅投稿ASCII名称。其他类型、非ASCII名称及未证域保留本地并统计；BO4 no-fold 声音域当前仍为 candidate，不自动投稿。现代声音别名必须有原始完整64位证据。
+- 仅公开各类型名称 TXT 和 about 方法摘要；batch fingerprint只摘要公开名称批次，不是搜索计划指纹。不上传工作库、原始证据、路径、关键词、捕获文件、源语料或 Saluki 旧索引。超过10000条可投稿名称明确拒绝，需拆批，不会截断清单。
+
+操作、公开范围、凭据删除及网络故障处理见[上游贡献完整教程](docs/upstream-contribution.zh-CN.md)。本版写端验证使用 fake GitHub，真实网络验证只读；不会为验收创建真实 findings PR。
 
 ## 2.3.0 上游更新适配
 
@@ -102,7 +113,9 @@ python scripts/validate_installer.py
 
 正式分发为 EXE 安装包，源码另提供 ZIP。构建机需要 Python/Rust、.NET SDK、Windows NativeAOT C++ 工具链和 Inno Setup；使用电脑不需要这些工具。不要只复制主程序 EXE，必须保留 `engine/NameFinder.Engine.exe` 及其依赖、教程和资源。源码调试可通过 `COD_NAME_FINDER_ENGINE` 指定已打包后端。
 
-2.3.0 已通过741项Python测试，注册表生成一致性和变更格式检查通过。最终EXE安装验收、NativeAOT自检及其他逐项结果集中在同版本发行附件[CODNameFinder-2.3.0-validation.json](https://github.com/ez4cywa/cod-name-finder/releases/download/v2.3.0/CODNameFinder-2.3.0-validation.json)，范围见[本版发布说明](docs/release-2.3.0.zh-CN.md)。历史2.2.1本地版包含524项pytest和15项Core检查，2.2.2公开版记录保存在[历史发布说明](docs/release-2.2.2.zh-CN.md)，不代替本版验收。MW7 Beta的真实BAT启动与捕获属于2026-10-05的现场记录；BO7现场捕获、Saluki GUI现场加载尚未通过对应验收。测试通过不保证有限候选空间能够还原每个名称，也不代表整个游戏已捕获。
+2.4.0 的完整回归、NativeAOT、投稿桥接和EXE安装验收以同版本发行附件 [CODNameFinder-2.4.0-validation.json](https://github.com/ez4cywa/cod-name-finder/releases/download/v2.4.0/CODNameFinder-2.4.0-validation.json)为准，验证范围见[本版说明](docs/release-2.4.0.zh-CN.md)。真实网络只读；fork、分支、提交和PR的写入路径以 fake GitHub 集成验证，不代表真实账号已投稿或维护者已合并。
+
+历史2.3.0通过741项Python测试，最终EXE安装验收与NativeAOT记录保存在[2.3.0验证附件](https://github.com/ez4cywa/cod-name-finder/releases/download/v2.3.0/CODNameFinder-2.3.0-validation.json)及[历史发布说明](docs/release-2.3.0.zh-CN.md)。历史2.2.1本地版包含524项pytest和15项Core检查，2.2.2公开版记录保存在[历史发布说明](docs/release-2.2.2.zh-CN.md)，不代替本版验收。MW7 Beta的真实BAT启动与捕获属于2026-10-05的现场记录；BO7现场捕获、Saluki GUI现场加载尚未通过对应验收。测试通过不保证有限候选空间能够还原每个名称，也不代表整个游戏已捕获。
 
 实现、作品域与表级证据详见[哈希算法覆盖](docs/hash-algorithm-coverage.md)；GPL 上游代码未直接复制，采用独立数学实现。软件不会捆绑游戏媒体、用户研究数据库或未经许可的社区整表。
 

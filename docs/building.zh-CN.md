@@ -1,6 +1,6 @@
 # Windows 开发与构建指南
 
-本页面向开发者，当前目标版本2.3.0，最终验证报告随发行附件提供。普通用户下载 [2.3.0 安装包](https://github.com/ez4cywa/cod-name-finder/releases/download/v2.3.0/CODNameFinder-2.3.0-Setup.exe) 后即可使用，无需安装本页的编译工具；操作步骤见[使用教程](user-guide.zh-CN.md)。构建目标为 Windows 11 x64，界面使用 Avalonia NativeAOT，文件处理由随包的 Python worker 完成，匹配引擎使用 Rust CPU 和可选 OpenCL GPU。
+本页面向开发者，当前目标版本2.4.0，最终验证报告随发行附件提供。普通用户下载 [2.4.0 安装包](https://github.com/ez4cywa/cod-name-finder/releases/download/v2.4.0/CODNameFinder-2.4.0-Setup.exe) 后即可使用，无需安装本页的编译工具；操作步骤见[使用教程](user-guide.zh-CN.md)。构建目标为 Windows 11 x64，界面使用 Avalonia NativeAOT，文件处理由随包的 Python worker 完成，匹配引擎使用 Rust CPU 和可选 OpenCL GPU。用户的名称计算及可选上游投稿均无需Git、gh、系统Python/.NET或研究项目checkout。
 
 ## 构建依赖
 
@@ -13,7 +13,7 @@
 | NativeAOT C++ 工具链 | 安装 Visual Studio Build Tools 的“使用 C++ 的桌面开发”工作负载，以及 MSVC x64 编译工具和 Windows SDK。常规托管构建成功不能替代 NativeAOT 发布检查。 |
 | Rust | 安装 Windows x64 MSVC 工具链；已验证的 2.2.1 构建机使用 rustc/cargo 1.96.0。依赖由 `native/Cargo.lock` 固定，使用 `cargo build --locked`。 |
 | Inno Setup | 已验证的 2.2.1 使用 Inno Setup 6.7.3。`scripts/build_installer.py` 接受 `INNO_ISCC` 指向 `ISCC.exe`，也查找 PATH 和常见安装位置。编译器未随源码分发。 |
-| PowerShell | 日常命令可使用 Windows PowerShell；`scripts/validate-capture-frontend.ps1` 明确要求 PowerShell 7。 |
+| PowerShell | 日常命令可使用 Windows PowerShell；捕获和上游贡献的前端验证脚本要求 PowerShell 7。 |
 | GPU 验证 | OpenCL 由显卡驱动提供，项目不捆绑驱动。CPU 构建和计算不要求有 GPU，但完整安装器验收包含 GPU 路径，须有可用 OpenCL 设备。 |
 | 安装器验收辅助包 | `scripts/validate_installer.py` 另导入 `pefile` 和 `Pillow`；`requirements-verify.txt` 固定 pefile 2024.8.26、Pillow 12.2.0，它们不属于用户运行依赖。 |
 
@@ -53,7 +53,7 @@ Pop-Location
 Python 后端可通过 `python -m finder --help` 查看命令。正式一键计算配置实例和各命令参数见[教程中的命令行部分](user-guide.zh-CN.md#安装版命令行无需-python-或-git)。源码调试的 GUI 通过 `COD_NAME_FINDER_ENGINE` 指向一个已经打包的 worker，例如：
 
 ```powershell
-$env:COD_NAME_FINDER_ENGINE = (Resolve-Path .\dist\2.3.0\CODNameFinder\engine\NameFinder.Engine.exe).Path
+$env:COD_NAME_FINDER_ENGINE = (Resolve-Path .\dist\2.4.0\CODNameFinder\engine\NameFinder.Engine.exe).Path
 Push-Location dotnet
 dotnet run --project CODNameFinder.App/CODNameFinder.App.csproj -c Release --no-build
 Pop-Location
@@ -63,7 +63,7 @@ Pop-Location
 
 ## 生成 EXE 安装包
 
-先关闭正在运行的构建输出，确认没有进程占用 `dist/2.3.0/CODNameFinder`。如果 Inno Setup 不在常见位置，设置：
+先关闭正在运行的构建输出，确认没有进程占用 `dist/2.4.0/CODNameFinder`。如果 Inno Setup 不在常见位置，设置：
 
 ```powershell
 $env:INNO_ISCC = 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe'
@@ -74,9 +74,9 @@ python scripts/build_release.py
 
 | 路径 | 内容 |
 | --- | --- |
-| `dist/2.3.0/CODNameFinder/` | 完整安装负载：主程序、`engine`、教程、示例、资源及许可。 |
-| `releases/CODNameFinder-2.3.0-Setup.exe` | Windows EXE 安装包。 |
-| `releases/CODNameFinder-2.3.0-source.zip` | 当前脚本生成的源码归档。 |
+| `dist/2.4.0/CODNameFinder/` | 完整安装负载：主程序、`engine`、教程、示例、资源及许可。 |
+| `releases/CODNameFinder-2.4.0-Setup.exe` | Windows EXE 安装包。 |
+| `releases/CODNameFinder-2.4.0-source.zip` | 当前脚本生成的源码归档。 |
 | `releases/SHA256SUMS.txt` | 安装包和源码归档校验值。 |
 | `releases/release.json` | 构建清单；其 `publication` 记录本地构建，不代替 GitHub 发布状态。 |
 
@@ -87,14 +87,43 @@ python scripts/build_release.py
 完成构建后运行：
 
 ```powershell
-.\dist\2.3.0\CODNameFinder\CODNameFinder.exe selftest
-pwsh -File scripts/validate-capture-frontend.ps1 -App .\dist\2.3.0\CODNameFinder\CODNameFinder.exe
+.\dist\2.4.0\CODNameFinder\CODNameFinder.exe selftest
+pwsh -File scripts/validate-capture-frontend.ps1 -App .\dist\2.4.0\CODNameFinder\CODNameFinder.exe
+pwsh -File scripts/validate-upstream-frontend.ps1 -App .\dist\2.4.0\CODNameFinder\CODNameFinder.exe
 python scripts/validate_installer.py
 ```
 
-第一项应输出 15 项 Core 检查及 `native_aot: true`。第二项使用合成桥接后端验证 BAT 选择、参数传递、捕获完成和停止行为，不启动真实游戏加载器。第三项以独立验证 AppId 安装到临时目录，在 System32-only PATH 和缺失系统 .NET 运行时的环境验证内置 worker、CPU/GPU、示例、快照、CDB 增量、教程、界面与卸载。验收日志写入本地 `validation`，不属于公开数据。
+第一项应输出 15 项 Core 检查及 `native_aot: true`。第二项使用合成桥接后端验证 BAT 选择、参数传递、捕获完成和停止行为，不启动真实游戏加载器。第三项使用假后端验证贡献区参数、Token标准输入传递、遮蔽、默认开关、操作状态，以及正常和最小窗口的控件内容居中，不进行真实GitHub写入。第四项以独立验证 AppId 安装到临时目录，在 System32-only PATH 和缺失系统 .NET 运行时的环境验证内置 worker、CPU/GPU、示例、快照、CDB 增量、教程、界面与卸载。验收日志写入本地 `validation`，不属于公开数据。
 
-2.3.0源码回归通过741项pytest，注册表`--check`及变更格式检查通过。最终EXE安装验收、NativeAOT自检和逐项状态以[CODNameFinder-2.3.0-validation.json发行附件](https://github.com/ez4cywa/cod-name-finder/releases/download/v2.3.0/CODNameFinder-2.3.0-validation.json)为准，范围见[本版发布说明](release-2.3.0.zh-CN.md)。2.2.1 本地版的524项pytest、15项Core检查及2.2.2的[历史公开验收](release-2.2.2.zh-CN.md)继续保留，不能代替新版本验收。MW7 Beta 的真实 BAT 启动与捕获属于2026-10-05的现场记录，BO7 的现场捕获尚未通过，Saluki GUI 的现场加载尚未验证。改变加载器、配置、游戏模块或显卡驱动后，必须重新验证相应行为，不能沿用原机器的现场结论。
+2.4.0最终源码回归、贡献桥接、NativeAOT及EXE安装逐项结果以[CODNameFinder-2.4.0-validation.json发行附件](https://github.com/ez4cywa/cod-name-finder/releases/download/v2.4.0/CODNameFinder-2.4.0-validation.json)为准，范围见[本版发布说明](release-2.4.0.zh-CN.md)。真实网络仅做只读检查；fork、分支、提交、PR及失败恢复以fake GitHub集成验证，不为验收创建真实findings PR，也不将假写端通过表述为真实账号已投稿。
+
+历史2.3.0源码回归通过741项pytest，注册表`--check`及变更格式检查通过。最终EXE安装验收、NativeAOT自检和逐项状态保存在[CODNameFinder-2.3.0-validation.json发行附件](https://github.com/ez4cywa/cod-name-finder/releases/download/v2.3.0/CODNameFinder-2.3.0-validation.json)，范围见[历史发布说明](release-2.3.0.zh-CN.md)。2.2.1 本地版的524项pytest、15项Core检查及2.2.2的[历史公开验收](release-2.2.2.zh-CN.md)继续保留，不能代替新版本验收。MW7 Beta 的真实 BAT 启动与捕获属于2026-10-05的现场记录，BO7 的现场捕获尚未通过，Saluki GUI 的现场加载尚未验证。改变加载器、配置、游戏模块或显卡驱动后，必须重新验证相应行为，不能沿用原机器的现场结论。
+
+## 修改2.4.0上游贡献流程
+
+用户操作与公开字段见[上游贡献教程](upstream-contribution.zh-CN.md)。本功能与名称计算、社区只读导入分开；失败不得覆盖计算成功状态或删除CSV/CDB。
+
+| 代码 | 职责与约束 |
+|---|---|
+| `finder/contribution_evidence.py` | 只读核对完整导出、相邻工作库及SHA，独立完整回算，仅接受注册表已证域；返回白名单行与数字统计，拒绝证据篡改、未合并WAL和超限输入 |
+| `finder/upstream.py` | 约束7部作品、5种类型和ASCII名称；同作品typed快照成员检查，社区、已合并TXT及分页开放PR排重；提交前刷新元数据；只公开分类TXT和about |
+| `finder/github_api.py` | 固定HTTPS API来源，验证公开Git对象内容，分页与失败关闭；fork异步就绪、分支和PR恢复不得重复写入 |
+| `finder/github_credentials.py` | Token只在内存或显式选择的Windows凭据管理器中保存，不进入普通配置、命令行或日志 |
+| `dotnet/CODNameFinder.Core/UpstreamSubmission.cs` | 经标准输入转交凭据，严格解析结果和安全PR链接；自动提交仅本会话明确开启且本轮完整完成、正式新增大于0、非低60位 |
+| `dotnet/CODNameFinder.App/MainWindow.Upstream.cs` | 默认折叠、自动提交默认关闭；显示完整预览入口、账号和保存状态，保持计算结果可用；长预览在界面截短时仍可打开完整文件 |
+
+只允许 `xanim`、`image`、`material`、`sndasset→sound_asset`、`soundbankalias→sound_alias` 投稿；其余类型、非ASCII名称和未证域只统计并保留本地。BO4 `fnv1a63-no-fold` 当前仍为candidate，不能为投稿改成已证。现代声音别名必须有本地完整64位证据，公开63位快照只能检查成员，不能补齐最高位。
+
+about中的batch fingerprint只摘要本次拟公开的类型、完整键和名称批次，不是搜索计划指纹；候选数是本轮实际新扫描数，耗时为整轮总耗时，不伪造逐方法运行成本。工作库、manifest、evidence、参数、路径、关键词、输入指纹、捕获、源语料和Saluki旧索引均不得进入公开PR。一次超过10000条可投稿行明确失败，不得静默截断。
+
+针对性回归可在已恢复开发依赖后运行：
+
+```powershell
+python -m pytest tests/test_contribution_evidence.py tests/test_github_api.py tests/test_github_credentials.py tests/test_upstream.py -q
+pwsh -File scripts/validate-upstream-frontend.ps1 -App .\dist\2.4.0\CODNameFinder\CODNameFinder.exe
+```
+
+写端测试必须使用fake GitHub及合成名称；真实网络验证只读公开提交、树、blob与PR，不使用验收样本创建真实投稿。覆盖来源/类型/profile混淆、32/63/64位边界、所有排重来源、分页截断、过期预览、权限与限流、取消及提交重试。用不可用Git/gh/系统Python/.NET环境验收安装版，确认新贡献教程和本版发布说明包含在完整安装负载中。不要把Token字面值写入测试命令、版本控制文件或截图。
 
 ## 修改2.3.0关联推测规则
 

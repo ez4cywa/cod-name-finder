@@ -1,6 +1,6 @@
 [project]
 name = "cod-name-finder"
-version = "2.3.0"
+version = "2.4.0"
 description = "Verified COD asset name discovery workbench"
 requires-python = ">=3.11"
 dependencies = ["PySide6>=6.8", "lz4>=4.4", "numpy>=2.0", "pyopencl>=2025.2"]

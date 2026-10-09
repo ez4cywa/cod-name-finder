@@ -41,6 +41,8 @@ def validate_glass_state(state, *, reduced=False, tutorial=False):
     assert 0 < state['log_height'] <= 72.1
     if not tutorial:
         assert state['compact_header'] and state['introduction_removed'] and state['custom_titlebar']
+        assert state['interactive_controls_centered'] is True
+        assert state['control_alignment_issues'] == []
         assert 0 < state['titlebar_height'] <= 52
         assert state['window_buttons'] == ['最小化窗口', '最大化窗口', '关闭窗口']
     glass = state['glass']
@@ -387,6 +389,27 @@ def main():
                 ready = check_export(result, expected)
                 assert decode_cdb((ready / 'hash_pkg/fnv1a_xanims_v2.cdb').read_bytes()) == expected
                 assert existing not in expected.values()
+                if backend == 'cpu':
+                    proposal = json.loads(execute(exe, 'upstream', 'prepare', '--export', result['path'], '--offline'))
+                    assert proposal['status'] == 'ready' and proposal['eligible_count'] == len(expected)
+                    assert not proposal['network_checked'] and not proposal['submit_allowed']
+                    assert proposal['unsupported_count'] == 0
+                    package = Path(proposal['package_dir'])
+                    assert package.resolve().is_relative_to(Path(result['run_dir']).resolve())
+                    public = package / 'public'
+                    lists = list(public.glob('*.txt'))
+                    assert len(lists) == 1 and lists[0].name.startswith('xanim_')
+                    assert {int(raw, 16): name for raw, name in
+                            (line.split(',', 1) for line in lists[0].read_text(encoding='utf-8').splitlines())} == expected
+                    preview = Path(proposal['preview_path']).read_text(encoding='utf-8')
+                    assert all(name in preview for name in expected.values())
+                    assert existing not in preview
+                    assert all(str(private) not in preview for private in (base, folder, indexes, Path(result['run_dir'])))
+                    assert set(path.suffix for path in public.iterdir()) == {'.txt', '.md'}
+                    report['installed_upstream_offline_preview'] = {
+                        'verified': True, 'eligible_names': proposal['eligible_count'],
+                        'type': 'xanim', 'network_access': False, 'credential_access': False,
+                        'no_git_or_research_required': True, 'private_paths_excluded': True}
             # Installed facade forwards estimate/method commands without a
             # developer runtime, including relative config paths.
             cpu_config_path=base/'Example CPU configuration.json'

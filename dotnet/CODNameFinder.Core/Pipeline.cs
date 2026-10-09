@@ -214,15 +214,16 @@ public static class Pipeline
             try {Directory.Delete(temporary,true);}catch(IOException){}catch(UnauthorizedAccessException){}
         }
     }
-    internal static Process StartEngine(IEnumerable<string> arguments)
+    internal static Process StartEngine(IEnumerable<string> arguments,bool redirectInput=false)
     {
         var engine=EnginePath;
         if(!File.Exists(engine))throw new FileNotFoundException("软件计算引擎缺失，请重新安装完整安装包。",engine);
         var start=new ProcessStartInfo(engine)
         {
-            UseShellExecute=false,CreateNoWindow=true,RedirectStandardOutput=true,RedirectStandardError=true,
+            UseShellExecute=false,CreateNoWindow=true,RedirectStandardOutput=true,RedirectStandardError=true,RedirectStandardInput=redirectInput,
             StandardOutputEncoding=Encoding.UTF8,StandardErrorEncoding=Encoding.UTF8,WorkingDirectory=Path.GetDirectoryName(engine)!
         };
+        if(redirectInput)start.StandardInputEncoding=new UTF8Encoding(false);
         foreach(var argument in arguments)start.ArgumentList.Add(argument);
         start.Environment["PYTHONIOENCODING"]="utf-8";start.Environment["PYTHONUTF8"]="1";
         return Process.Start(start)??throw new InvalidOperationException("无法启动软件计算引擎");
